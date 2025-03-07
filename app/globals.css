@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-500: "#ffffff";
+  --secondary-500: "#ffffff";
+  --accent-500: "#F1720C";
+  --accent-400: "#F1720C";
+  --accent-300: "#FAD9A8";
+  --accent-200: "#F4F0E4";
+  --accent-100: "#fce3ce";
+  --gray-500: "#616165";
+  --gray-300: "#616165";
+  --brown-default: "#7E5B4E";
+  --brown-200: "#EDE0D0";
+  --black-default: "#000000";
+  --black-400: "#1E1E1E";
+  --black-300: "#1E1305";
+}
