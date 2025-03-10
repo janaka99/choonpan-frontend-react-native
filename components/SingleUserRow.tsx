@@ -14,10 +14,10 @@ const SingleUserRow = ({ user }: Props) => {
       </View>
       <View className="flex-grow bg-gray-50 flex-row px-4 py-3 rounded-2xl items-center ">
         <Text className="text-xl font-Poppins-Medium text-gray-400 w-10">
-          {user.id}
+          {user.user.id}
         </Text>
         <Text className="text-xl font-Poppins-Medium text-gray-400">
-          {user.name}
+          {user.user.name}
         </Text>
       </View>
     </View>

@@ -10,12 +10,13 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { VendorSignUpSchema } from "@/schemas/user";
 import { z } from "zod";
+import Toast from "react-native-toast-message";
 
 const VendorSignUp = () => {
   const { session } = useAuth();
 
   if (session) return <Redirect href="/" />;
-
+  const { userSignUpAction } = useAuth();
   const {
     control,
     handleSubmit,
@@ -23,15 +24,26 @@ const VendorSignUp = () => {
   } = useForm({
     resolver: zodResolver(VendorSignUpSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: "samantha",
+      email: "samantha@gmail.com",
+      password: "$123Chamith",
+      confirmPassword: "$123Chamith",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof VendorSignUpSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof VendorSignUpSchema>) => {
+    const res = await userSignUpAction(data);
+    if (res.error) {
+      Toast.show({
+        type: "error",
+        text1: res.message,
+      });
+    } else {
+      Toast.show({
+        type: "success",
+        text1: res.message,
+      });
+    }
   };
 
   return (

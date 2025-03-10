@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "@/components/Card";
 import { useAuth } from "@/context/AuthContext";
 import { Redirect, useRouter } from "expo-router";
-import NormalText from "@/components/NormalText";
 import CustomButton from "@/components/CustomButton";
 import { PROFILES } from "@/constants/data";
 

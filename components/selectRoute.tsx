@@ -10,7 +10,7 @@ import {
   getRoute,
 } from "@/utils/categorizedOrders";
 import { ALL_ORDERS, ROUTE_WITH_ORDERS } from "@/constants/tempory";
-import { getRoutes } from "@/constants/maphelp";
+import { getRoutes } from "@/utils/maphelp";
 import MapHeader from "@/components/MapHeader";
 type Props = {};
 

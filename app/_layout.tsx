@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { AuthProvider } from "@/context/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "react-native-get-random-values";
+import { OrderProvider } from "@/context/order/OrderContext";
 
 export default function RootLayout() {
   const [fontLoaded] = useFonts({
@@ -39,8 +40,10 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }} />
-      <Toast />
+      <OrderProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+        <Toast />
+      </OrderProvider>
     </AuthProvider>
   );
 }

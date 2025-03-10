@@ -4,7 +4,7 @@ import axios from "axios";
 
 // Create Axios Instance
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.235.252:3000/api",
+  baseURL: "http://192.168.142.252:3000/api",
   //   withCredentials: true,
 });
 
@@ -33,8 +33,4 @@ axiosInstance.interceptors.request.use(
 //         console.error("API Error:", error.response.status, error.response.data);
 //       }
 //     }
-//     return Promise.reject(error); // Reject promise to handle error in requests
-//   }
-// );
-
 export default axiosInstance;

@@ -1,8 +1,10 @@
 import { z } from "zod";
 
 export const ProductSchema = z.object({
-  id: z.number().int().optional(),
-  name: z.string(),
+  id: z.number().int().optional().nullable(),
+  name: z.string().min(1, {
+    message: "Name is requried",
+  }),
   price: z
     .number()
     .min(0, { message: "Price cannot be negative" })

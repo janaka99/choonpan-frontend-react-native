@@ -1,13 +1,7 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { Text, SafeAreaView } from "react-native";
-import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-
-const AuthContext = createContext<undefined | any>(undefined);
-
 import { ReactNode } from "react";
-import { account } from "@/lib/appwrite";
-import { ID, Models } from "react-native-appwrite";
 import {
   EmployeeRegisterSchema,
   LoginSchema,
@@ -15,10 +9,9 @@ import {
   UserSignUpSchema,
 } from "@/schemas/user";
 import { z } from "zod";
-import { config } from "@/constants/data";
 import axiosInstance from "@/utils/axiosInstance";
 
-const URL = "http://localhost:3000/api/auth/register";
+const AuthContext = createContext<undefined | any>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
@@ -40,7 +33,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         // Find the profile object that contains the specified profileType key
         const profile = profiles.find((p: any) => p[profileType]);
-
         if (profile) {
           setActiveProfile(profile); // Store the whole object
         }
@@ -62,7 +54,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         } else {
           updateTokenInStore(res.data.data.token);
           setUser(res.data.data.user);
-          setActiveProfile(res.data.data.user.profiles[1]);
+          setActiveProfile(res.data.data.user.profiles[0]);
         }
       } else {
         setUser(null);
@@ -94,7 +86,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       await updateTokenInStore(response.data.data.token);
       setUser(response.data.data.user);
-      setActiveProfile(response.data.data.user.profiles[1]);
+      setActiveProfile(response.data.data.user.profiles[0]);
       return {
         success: true,
         message: response.data.message,
@@ -172,7 +164,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         };
       }
       await updateTokenInStore(response.data.data.token);
-      setActiveProfile(response.data.data.user.profiles[1]);
+      setActiveProfile(response.data.data.user.profiles[0]);
       setUser(response.data.data.user);
       return {
         success: true,
@@ -239,6 +231,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth,
     activeProfile,
     toggleProfiles,
+    userSignUpAction,
+    registerNewEmployee,
   };
   return (
     <AuthContext.Provider value={contextData}>

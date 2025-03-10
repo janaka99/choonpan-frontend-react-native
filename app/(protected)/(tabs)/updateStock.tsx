@@ -17,11 +17,32 @@ import images from "@/constants/icons";
 import AddStockCard from "@/components/AddStockCard";
 import SectionTitle from "@/components/SectionTitle";
 import Card from "@/components/Card";
+import Toast from "react-native-toast-message";
+import { Product } from "@/types/types";
 
 type Props = {};
+type ActionType = "increase" | "decrease";
 
 const UpdateStock = (props: Props) => {
-  const [products, setProducts] = useState([]);
+  const [order, setOrder] = useState<null | {
+    location: {
+      latitude: number;
+      longitude: number;
+    };
+    orders: {
+      productId: string;
+      price: number;
+      baught: number;
+      name: string;
+    }[];
+  }>({
+    location: {
+      latitude: 9.9999,
+      longitude: 9.9999,
+    },
+    orders: [],
+  });
+  const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<null | string>(
@@ -32,6 +53,13 @@ const UpdateStock = (props: Props) => {
 
   const loadProducts = async () => {
     setIsLoading(true);
+    setOrder({
+      location: {
+        latitude: 9.9999,
+        longitude: 9.9999,
+      },
+      orders: [],
+    });
     await getProducts();
     setIsLoading(false);
   };
@@ -74,6 +102,111 @@ const UpdateStock = (props: Props) => {
     setRefreshing(true);
     await loadProducts();
     setRefreshing(false);
+  };
+
+  const updateBaught = (productId: number, action: ActionType) => {
+    setOrder((prevOrder: any) => {
+      // If there is no prevOrder, create a new order with an empty orders array
+      if (!prevOrder) {
+        return {
+          location: {
+            latitude: "0", // Default or fetched latitude
+            longitude: "0", // Default or fetched longitude
+          },
+          orders: [],
+        };
+      }
+
+      const { location, orders } = prevOrder;
+
+      // Find the product in the products array
+      const product = products.find((p) => p.id === productId);
+      if (!product) return prevOrder; // Return if product doesn't exist
+
+      // Handle the action based on 'increase' or 'decrease'
+      if (action === "increase") {
+        // Check if there is enough stock left
+        if (product.stock <= 0) {
+          Toast.show({
+            type: "error",
+            text1: "Not enough stock",
+          });
+          return prevOrder; // Exit if stock is insufficient
+        }
+
+        // Check if the product exists in the orders array
+        const existingOrder = orders.find(
+          (orderItem: any) => orderItem.productId === productId.toString()
+        );
+        if (existingOrder) {
+          // Update the baught count for the product in orders
+          existingOrder.baught += 1;
+        } else {
+          // If product doesn't exist in orders, add it to orders with baught = 1
+          orders.push({
+            productId: productId.toString(),
+            price: product.price,
+            baught: 1,
+            name: product.name,
+          });
+        }
+
+        // Decrease stock in products array
+        product.stock -= 1;
+      } else if (action === "decrease") {
+        // Find the existing order for the product
+        const existingOrder = orders.find(
+          (orderItem: any) => orderItem.productId === productId.toString()
+        );
+        if (!existingOrder || existingOrder.baught <= 0) {
+          return prevOrder; // Exit if there are no units to decrease
+        }
+
+        // Decrease the baught count for the product in orders
+        existingOrder.baught -= 1;
+
+        // Increase stock in products array
+        product.stock += 1;
+      }
+      console.log(orders, products);
+      return { location, orders }; // Return updated order
+    });
+  };
+
+  const submitOrder = async () => {
+    try {
+      if (!order || order.orders.length <= 0) {
+        return;
+      }
+      setIsLoading(true);
+      const response = await axiosInstance.post(`/order/new`, order);
+      if (response.data.error) {
+        Toast.show({
+          type: "error",
+          text1: "Failed to submit order. Please try again.",
+        });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: "Order submitted successfully",
+        });
+
+        setOrder({
+          location: {
+            latitude: 9.9999,
+            longitude: 9.9999,
+          },
+          orders: [],
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Failed to submit order. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const spin = spinValue.interpolate({
@@ -135,7 +268,9 @@ const UpdateStock = (props: Props) => {
               <CustomButton
                 varient="small_accent"
                 text="Update"
+                onClick={submitOrder}
                 width="w-2/4"
+                disabled={order === null || order.orders.length <= 0}
               />
             </View>
             {products && products.length <= 0 ? (
@@ -153,7 +288,10 @@ const UpdateStock = (props: Props) => {
             ) : (
               <View className="px-8 pt-8 gap-8">
                 {products.map((product: any, i) => (
-                  <Card className=" gap-5 items-center justify-center">
+                  <Card
+                    key={i}
+                    className=" gap-5 items-center justify-center realtive"
+                  >
                     <Text className="text-3xl font-Poppins-Medium">
                       {product.name}
                     </Text>
@@ -162,7 +300,7 @@ const UpdateStock = (props: Props) => {
                         {/* Minus Button */}
                         <TouchableOpacity
                           // disabled={isSubmitting || value <= 0}
-                          // onPress={() => onChange(Math.max(0, value - 1))}
+                          onPress={() => updateBaught(product.id, "decrease")}
                           className="bg-gray-200 w-16 aspect-square rounded-full justify-center items-center"
                         >
                           <Text className="text-5xl font-bold">-</Text>
@@ -170,14 +308,21 @@ const UpdateStock = (props: Props) => {
 
                         {/* Stock Value */}
 
-                        <Text className="px-10 text-2xl font-Poppins-Bold">
-                          0
-                        </Text>
+                        {(() => {
+                          const orderItem = order?.orders.find(
+                            (o) => o.productId === product.id.toString()
+                          );
+                          return (
+                            <Text className="px-10 text-2xl font-Poppins-Bold">
+                              {orderItem ? orderItem.baught : 0}
+                            </Text>
+                          );
+                        })()}
 
                         {/* Plus Button */}
                         <TouchableOpacity
                           // disabled={isSubmitting}
-                          // onPress={() => onChange(value + 1)}
+                          onPress={() => updateBaught(product.id, "increase")}
                           className=" bg-accent-500 w-16 aspect-square rounded-full justify-center items-center "
                         >
                           <Text className="text-5xl font-bold text-white pt-2">
@@ -185,6 +330,10 @@ const UpdateStock = (props: Props) => {
                           </Text>
                         </TouchableOpacity>
                       </View>
+                    </View>
+                    <View className="absolute top-4 right-4 flex-row items-center gap-2 bg-green-100 p-1 rounded-md">
+                      <Text>Available</Text>
+                      <Text>{product.stock}</Text>
                     </View>
                     <Text className="text-2xl font-Poppins-Medium">
                       LKR {product.price}

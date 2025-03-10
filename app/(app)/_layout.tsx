@@ -8,7 +8,6 @@ type Props = {};
 
 const NormalLayout = (props: Props) => {
   const { user } = useAuth();
-  console.log(user);
   return user ? <Redirect href="/" /> : <Slot />;
 };
 

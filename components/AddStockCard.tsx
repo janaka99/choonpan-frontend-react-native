@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Card from "./Card";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import CustomButton from "./CustomButton";
-import { Link, Redirect } from "expo-router";
+import { Link } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,18 +12,18 @@ import CustomInput from "./CustomInput";
 import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
-import SectionTitle from "./SectionTitle";
-import NormalText from "./NormalText";
 
 type Props = {
   update?: boolean;
   product?: any;
+  getProducts?: () => void;
 };
 
-export default function AddStockCard({ update = false, product }: Props) {
-  const [name, setName] = useState("");
-  const [stock, setStock] = useState(0);
-
+export default function AddStockCard({
+  update = false,
+  product,
+  getProducts,
+}: Props) {
   const {
     control,
     handleSubmit,
@@ -32,10 +32,10 @@ export default function AddStockCard({ update = false, product }: Props) {
   } = useForm({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
-      name: product ? product.name : "",
-      price: product ? product.price : 0.0,
-      stock: product ? product.stock : 0,
-      id: product ? product.id : null,
+      name: product?.name || "",
+      price: product?.price || 0.0,
+      stock: product?.stock || 0,
+      id: product?.id || null,
     },
   });
 
@@ -55,14 +55,18 @@ export default function AddStockCard({ update = false, product }: Props) {
           type: "success",
           text1: response.data.message,
         });
+        if (update) {
+          if (getProducts) {
+            getProducts();
+          }
+          return;
+        }
         reset({
           name: "",
           price: 0.0,
           stock: 0,
         });
-        if (update) {
-          return;
-        }
+
         router.push("/products");
       }
     } catch (error) {
@@ -72,6 +76,15 @@ export default function AddStockCard({ update = false, product }: Props) {
       });
     }
   };
+
+  useEffect(() => {
+    reset({
+      name: product?.name || "",
+      price: product?.price || 0,
+      stock: product?.stock || 0,
+      id: product?.id || null,
+    });
+  }, [product, reset]);
 
   return (
     <Card>
@@ -110,11 +123,15 @@ export default function AddStockCard({ update = false, product }: Props) {
                 <View>
                   <CustomInput
                     disabled={isSubmitting}
-                    value={value.toString()}
+                    value={
+                      value !== null && value !== undefined
+                        ? value.toString()
+                        : ""
+                    }
                     onChange={(text) => {
                       const formatted = text.replace(/[^0-9.]/g, ""); // Allow only numbers and dot
                       if (/^\d*\.?\d{0,2}$/.test(formatted)) {
-                        onChange(formatted);
+                        onChange(formatted === "" ? null : Number(formatted)); // Convert to number
                       }
                     }}
                     title="Price (LKR)"
@@ -223,7 +240,9 @@ export default function AddStockCard({ update = false, product }: Props) {
                     onChange={(text) => {
                       const formatted = text.replace(/[^0-9.]/g, ""); // Allow only numbers and dot
                       if (/^\d*\.?\d{0,2}$/.test(formatted)) {
-                        onChange(formatted);
+                        onChange(
+                          formatted === "" ? undefined : Number(formatted)
+                        ); // Convert to number
                       }
                     }}
                     title="Price (LKR)"
@@ -249,7 +268,9 @@ export default function AddStockCard({ update = false, product }: Props) {
                     value={value.toString()}
                     onChange={(text) => {
                       const formatted = text.replace(/\D/g, ""); // Allow only numbers
-                      onChange(formatted);
+                      onChange(
+                        formatted === "" ? undefined : Number(formatted)
+                      ); // Convert to number
                     }}
                     title="Stock"
                     placeholder=""

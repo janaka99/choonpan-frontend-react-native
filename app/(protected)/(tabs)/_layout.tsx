@@ -47,7 +47,24 @@ const ProtectedLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="products"
+        name="selectRoute"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <View className="flex-1 flex-col mt-1 items-center">
+              <View className="w-16 aspect-square rounded-full  bg-[#EDF1FF] items-center justify-center">
+                <House
+                  className="h-4 text-accent-500"
+                  color={focused ? "#737375" : "#BDBDBD"}
+                  size={26}
+                />
+              </View>
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="analytics"
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
@@ -64,13 +81,13 @@ const ProtectedLayout = () => {
         }}
       />
 
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="selectRoute"
         options={{
           headerShown: false,
           tabBarIcon: () => null,
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="updateStock"
         options={{

@@ -6,9 +6,24 @@ type Props = {
   background: string;
   title: string;
   sales: string;
+  loading?: boolean;
+  upby: string;
 };
 
-const SalesComponent = ({ icon, background, title, sales }: Props) => {
+const SalesComponent = ({
+  icon,
+  background,
+  title,
+  sales,
+  loading = false,
+  upby,
+}: Props) => {
+  if (loading) {
+    return (
+      <View className="h-20 w-full rounded-xl bg-gray-50 animate-pulse"></View>
+    );
+  }
+
   return (
     <View className="bg-white flex-row items-center gap-6 rounded-xl p-6 h-fit ">
       <View
@@ -17,7 +32,7 @@ const SalesComponent = ({ icon, background, title, sales }: Props) => {
         <Image source={icon} className="w-full " resizeMode="contain" />
       </View>
       <View className=" flex-col  h-fit justify-between flex-grow">
-        <Text className="text-gray-400 text-xl font-Poppins-Medium">
+        <Text className="text-gray-400 text-xl font-Poppins-Medium mb-2">
           {title}
         </Text>
         <View className=" flex-grow justify-end">
@@ -26,7 +41,7 @@ const SalesComponent = ({ icon, background, title, sales }: Props) => {
               LKR {sales}
             </Text>
             <Text className="text-green-400 text-xl font-Poppins-Medium ">
-              +12%
+              +{upby}
             </Text>
           </View>
         </View>

@@ -37,7 +37,6 @@ const products = (props: Props) => {
   const getProducts = async () => {
     try {
       setError(null);
-      setProducts([]);
       const response = await axiosInstance.get(`/products/all`);
       if (response.data.error) {
         setError("server Error Occured Try Again");
@@ -90,7 +89,7 @@ const products = (props: Props) => {
   }
 
   return (
-    <SafeAreaView className="h-full ">
+    <SafeAreaView className="h-full pb-[75px] ">
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -132,7 +131,12 @@ const products = (props: Props) => {
             ) : (
               <View className="px-8 pt-8 gap-8">
                 {products.map((product: any, i) => (
-                  <AddStockCard update product={product} key={i} />
+                  <AddStockCard
+                    update
+                    product={product}
+                    key={i}
+                    getProducts={getProducts}
+                  />
                 ))}
               </View>
             )}

@@ -11,19 +11,21 @@ import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { formatNumber } from "@/utils/formatPrice";
 import { useAuth } from "@/context/AuthContext";
-import { PROFILES } from "@/constants/data";
-import { router } from "expo-router";
+import { Redirect } from "expo-router";
+import BestSelling from "@/components/BestSelling";
 
-const ManagerDashboard = (props: Props) => {
-  const { toggleProfiles } = useAuth();
+const Analytics = (props: Props) => {
+  const { user } = useAuth();
   const [totalSales, setTotalSales] = useState<null | number>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);
   const [SalesLoading, setSalesLoading] = useState(true);
 
+  if (!user) return <Redirect href="/sign-in" />;
+
   const fetchSalesData = async () => {
     setSalesLoading(true);
     try {
-      const res = await axiosInstance.get("/manager/sales/totalsales");
+      const res = await axiosInstance.get("/employee/sales/totalsales");
       if (res.data.error) {
         Toast.show({
           type: "error",
@@ -43,11 +45,6 @@ const ManagerDashboard = (props: Props) => {
     }
   };
 
-  const handlePress = () => {
-    toggleProfiles(PROFILES.employee);
-    router.replace("/dashboard-landing");
-  };
-
   useEffect(() => {
     fetchSalesData();
   }, []);
@@ -64,23 +61,18 @@ const ManagerDashboard = (props: Props) => {
       >
         <View className="gap-10 mb-4">
           <View className="px-7 pt-5 gap-4 ">
+            <Text className="text-center text-2xl text-gray-300 font-Poppins-Bold">
+              FINANCIAL SUMMARY
+            </Text>
             <View className="flex-row justify-between items-center gap-2 ">
-              <View className="pt-1">
-                <Text className="font-Poppins-Bold text-2xl text-gray-300 ">
-                  Hi,
+              <View className="pt-1 flex-row gap-2">
+                <Text className="font-Poppins-Regular text-2xl text-gray-300 ">
+                  Employee -
                 </Text>
-                <Text className="font-Poppins-Bold text-2xl  text-gray-300 capitalize w-fit">
-                  Janaka
+                <Text className="font-Poppins-Regular text-2xl  text-gray-300 capitalize w-fit">
+                  {user.name}
                 </Text>
               </View>
-              <TouchableOpacity
-                onPress={handlePress}
-                className="py-3 px-4  uppercase bg-black rounded-xl w-fit"
-              >
-                <Text className="text-lg font-Poppins-Bold text-white uppercase ">
-                  SWITCH to user
-                </Text>
-              </TouchableOpacity>
             </View>
             <SectionTitle title="Overview" icon={images.GridIcon} />
             <SalesComponent
@@ -105,7 +97,7 @@ const ManagerDashboard = (props: Props) => {
             <SalesChart />
           </View>
           <View className="px-7 gap-4">
-            <EmployeesList />
+            <BestSelling />
           </View>
         </View>
       </ScrollView>
@@ -113,4 +105,4 @@ const ManagerDashboard = (props: Props) => {
   );
 };
 
-export default ManagerDashboard;
+export default Analytics;
