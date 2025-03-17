@@ -1,18 +1,13 @@
 import { SafeAreaView } from "react-native";
 import React, { useState } from "react";
-
-import { ALL_ORDERS, ROUTE_WITH_ORDERS } from "@/constants/tempory";
-
 import MapHeader from "@/components/MapHeader";
-import { PolylinePressEvent } from "react-native-maps/lib/MapPolyline";
-import { Alert } from "react-native";
-import images from "@/constants/icons";
+import { useOrderContext } from "@/context/order/OrderContext";
+import MapViewComponent from "@/components/MapView";
 import {
   InformationButton,
   SelectRouteButton,
+  SellStockouteButton,
 } from "@/components/SelectRouteButton";
-import { useOrderContext } from "@/context/order/OrderContext";
-import MapViewComponent from "@/components/MapView";
 type Props = {};
 
 export const options = {
@@ -20,12 +15,22 @@ export const options = {
 };
 
 const selectRoute = (props: Props) => {
+  const { selectedRoute, journeyStarted, setJourneyStarted } =
+    useOrderContext();
   return (
     <>
-      <SafeAreaView className="rounded-xl flex-grow overflow-hidden w-full ">
+      <SafeAreaView className="rounded-xl h-full overflow-hidden w-full ">
         <MapHeader title="SELECT ROUTE" />
         <MapViewComponent />
-        <SelectRouteButton />
+        {selectedRoute ? (
+          journeyStarted ? (
+            <SellStockouteButton />
+          ) : (
+            <InformationButton />
+          )
+        ) : (
+          <SelectRouteButton />
+        )}
       </SafeAreaView>
     </>
   );

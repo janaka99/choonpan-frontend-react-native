@@ -50,7 +50,9 @@ const GooglePlaces = ({ setLocationSearchingOn }: any) => {
       const data = await response.json();
       console.log();
       const location = data.result.geometry.location;
-      updateCurrentLocation(location.lat, location.lng, data.result.name);
+
+      await updateCurrentLocation(location.lat, location.lng, data.result.name);
+      setLocationSearchingOn(false);
     } catch (error) {
       console.error("Error fetching place details:", error);
     }
@@ -62,13 +64,13 @@ const GooglePlaces = ({ setLocationSearchingOn }: any) => {
     fetchPlaceSuggestions(query); // Fetch suggestions on input change
   };
 
-  const handle = () => {
-    setLocationSearchingOn(false);
-    updateCurrentLocation(
+  const handle = async () => {
+    await updateCurrentLocation(
       JOHNS_BAKERY_LOCATION.latitude,
       JOHNS_BAKERY_LOCATION.longitude,
       JOHNS_BAKERY_LOCATION.name
     );
+    setLocationSearchingOn(false);
   };
 
   return (

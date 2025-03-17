@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import SingleUserRow from "./SingleUserRow";
+import { Modal, Text, TouchableOpacity, View } from "react-native";
 import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { Calendar } from "react-native-calendars";
@@ -20,7 +12,7 @@ const formatDate = (date: Date) => {
   return `${year}-${month}-${day}`;
 };
 
-export default function BestSelling() {
+export default function EmployeeBestSelling({ userid }: { userid: string }) {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
 
@@ -47,9 +39,12 @@ export default function BestSelling() {
         startDate: selectedRange.start,
         endDate: selectedRange.end,
       };
-      const res = await axiosInstance.get("/employee/products/best-selling", {
-        params,
-      });
+      const res = await axiosInstance.get(
+        `/employee/stats/${userid}/best-selling`,
+        {
+          params,
+        }
+      );
       if (res.data.error) {
         Toast.show({
           type: "error",
@@ -77,7 +72,7 @@ export default function BestSelling() {
 
   useEffect(() => {
     fetchEmployees();
-  }, [selectedRange]);
+  }, [selectedRange, userid]);
 
   return (
     <View className="p-5 rounded-xl bg-white gap-4 ">

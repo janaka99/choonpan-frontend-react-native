@@ -17,8 +17,12 @@ import CHartIcon from "@/assets/images/chart.png";
 import ProductsIcon from "@/assets/images/icons8-products-50.png";
 import DriversIcon from "@/assets/images/DriverIcon.png";
 import LocationMark from "@/assets/images/location-mark.png";
+import OtherDriver from "@/assets/images/otherdriver.png";
+import PersonIcon from "@/assets/images/icons8-account-24.png";
 
 export default {
+  PersonIcon,
+  OtherDriver,
   LocationMark,
   DriversIcon,
   ProductsIcon,

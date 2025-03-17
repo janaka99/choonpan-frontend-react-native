@@ -3,14 +3,13 @@ import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Link, Redirect } from "expo-router";
 import PublicHeader from "@/components/PublicHeader";
-import ContainerWithoutScrollView from "@/components/ContainerWithoutScrollView";
 import images from "@/constants/icons";
 import Container from "@/components/Container";
 
 const SignIn = () => {
-  // const { session, signIn } = useAuth();
+  const { user } = useAuth();
 
-  // if (session) return <Redirect href="/" />;
+  if (user) return <Redirect href="/" />;
 
   const [open, setOpen] = useState(false);
 

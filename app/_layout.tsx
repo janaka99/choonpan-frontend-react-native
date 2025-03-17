@@ -4,9 +4,10 @@ import "./globals.css";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { AuthProvider } from "@/context/AuthContext";
-import { SafeAreaView } from "react-native-safe-area-context";
 import "react-native-get-random-values";
 import { OrderProvider } from "@/context/order/OrderContext";
+import { LocationProvider } from "@/context/liveLocationContext";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 export default function RootLayout() {
   const [fontLoaded] = useFonts({
@@ -40,10 +41,14 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <OrderProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-        <Toast />
-      </OrderProvider>
+      <LocationProvider>
+        <OrderProvider>
+          <NotificationProvider>
+            <Stack screenOptions={{ headerShown: false }} />
+            <Toast />
+          </NotificationProvider>
+        </OrderProvider>
+      </LocationProvider>
     </AuthProvider>
   );
 }

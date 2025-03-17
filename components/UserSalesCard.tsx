@@ -9,7 +9,7 @@ import { formatNumber } from "@/utils/formatPrice";
 
 type Props = {};
 
-const UserSalesCard = (props: Props) => {
+const UserSalesCard = ({ refreshing }: any) => {
   const [totalSales, setTotalSales] = useState<null | string>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);
   const [SalesLoading, setSalesLoading] = useState(true);

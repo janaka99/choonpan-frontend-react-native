@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 type Props = {};
 import images from "@/constants/icons";
@@ -15,10 +21,14 @@ import { PROFILES } from "@/constants/data";
 import { router } from "expo-router";
 
 const ManagerDashboard = (props: Props) => {
-  const { toggleProfiles } = useAuth();
+  const { toggleProfiles, user } = useAuth();
   const [totalSales, setTotalSales] = useState<null | number>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);
   const [SalesLoading, setSalesLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [employees, setEmployees] = useState([]);
 
   const fetchSalesData = async () => {
     setSalesLoading(true);
@@ -43,13 +53,43 @@ const ManagerDashboard = (props: Props) => {
     }
   };
 
+  const fetchEmployees = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axiosInstance.get("/manager/employee/all");
+      if (res.data.error) {
+        Toast.show({
+          type: "error",
+          text1: res.data.message,
+        });
+        return;
+      }
+      setEmployees(res.data.employees);
+      setIsLoading(false);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Internal server error",
+      });
+    }
+  };
+
   const handlePress = () => {
     toggleProfiles(PROFILES.employee);
     router.replace("/dashboard-landing");
   };
 
+  const onRefresh = async () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    fetchSalesData();
+    fetchEmployees();
+    setRefreshing(false);
+  };
+
   useEffect(() => {
     fetchSalesData();
+    fetchEmployees();
   }, []);
 
   return (
@@ -61,6 +101,9 @@ const ManagerDashboard = (props: Props) => {
           backgroundColor: "#f7f7f7",
           marginBottom: 80,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View className="gap-10 mb-4">
           <View className="px-7 pt-5 gap-4 ">
@@ -70,7 +113,7 @@ const ManagerDashboard = (props: Props) => {
                   Hi,
                 </Text>
                 <Text className="font-Poppins-Bold text-2xl  text-gray-300 capitalize w-fit">
-                  Janaka
+                  {user.name}
                 </Text>
               </View>
               <TouchableOpacity
@@ -105,7 +148,7 @@ const ManagerDashboard = (props: Props) => {
             <SalesChart />
           </View>
           <View className="px-7 gap-4">
-            <EmployeesList />
+            <EmployeesList employees={employees} isLoading={isLoading} />
           </View>
         </View>
       </ScrollView>

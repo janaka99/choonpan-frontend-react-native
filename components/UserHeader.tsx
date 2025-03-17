@@ -34,7 +34,7 @@ export default function UserHeader({
   const handleLocationPress = () => {
     setLocationSearchingOn(!locationSearchingOn);
   };
-
+  console.log(currentLocation);
   return (
     <View>
       <View className={`flex-row justify-between px-7 ${className}`}>

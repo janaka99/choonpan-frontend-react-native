@@ -4,6 +4,7 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import images from "@/constants/icons";
 import { useOrderContext } from "@/context/order/OrderContext";
+import { useLocationContext } from "@/context/liveLocationContext";
 
 type Props = {};
 
@@ -16,7 +17,10 @@ const MapViewComponent = () => {
     currentLocationUpdating,
     selectedRoute,
     setSelectedRoute,
+    otherDrivers,
   } = useOrderContext();
+
+  const { liveLocation } = useLocationContext();
 
   const onMarkerClick = (rt: any) => {
     setSelectedRoute(rt);
@@ -36,6 +40,21 @@ const MapViewComponent = () => {
         longitudeDelta: 0.003,
       }}
     >
+      {liveLocation && (
+        <Marker
+          coordinate={{
+            latitude: Number(liveLocation.latitude),
+            longitude: Number(liveLocation.longitude),
+          }}
+        >
+          <View style={MapStyles.person}>
+            <Image
+              source={images.DriversIcon}
+              className="w-full object-contain "
+            />
+          </View>
+        </Marker>
+      )}
       {currentLocation && (
         <Marker
           coordinate={{
@@ -65,7 +84,20 @@ const MapViewComponent = () => {
             </View>
           </Marker>
         ))}
-
+      {otherDrivers &&
+        otherDrivers.map((lc: any, i: any) => (
+          <Marker
+            key={i}
+            coordinate={{
+              latitude: Number(lc.latitude),
+              longitude: Number(lc.longitude),
+            }}
+          >
+            <View className="w-10 h-10">
+              <Image source={images.OtherDriver} className="w-full  h-full " />
+            </View>
+          </Marker>
+        ))}
       {availableRoutes.length >= 1 &&
         availableRoutes.map((rt: any, i: any) => {
           return (
@@ -76,7 +108,7 @@ const MapViewComponent = () => {
               strokeColor={
                 selectedRoute
                   ? selectedRoute.id == rt.id
-                    ? "#00f"
+                    ? "#F1720C"
                     : "#bebebe"
                   : "#bebebe"
               }
@@ -98,7 +130,7 @@ const MapStyles = StyleSheet.create({
   marker: {
     width: 30,
     height: 30,
-    backgroundColor: "#000",
+    backgroundColor: "#169CE8",
     borderRadius: 9999,
     alignItems: "center",
     justifyContent: "center",
@@ -106,5 +138,12 @@ const MapStyles = StyleSheet.create({
   person: {
     width: 40,
     height: 40,
+  },
+  driver: {
+    width: 50,
+    height: 50,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

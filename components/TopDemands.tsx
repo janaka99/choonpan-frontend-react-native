@@ -18,16 +18,18 @@ export default function TopDemands({}: Props) {
     selectedRoute,
     setSelectedRoute,
   } = useOrderContext();
-
+  console.log(selectedRoute);
   return (
     <Card className="mb-5">
       <Text className="font-Poppins-Bold text-3xl  text-gray-100  w-fit  ">
         Demand Insights{" "}
-        {demandItems && demandItems.length > 0 ? `${demandItems.length}` : ""}
+        {selectedRoute && selectedRoute.orderInsights.length > 0
+          ? `${selectedRoute.orderInsights.length}`
+          : ""}
       </Text>
       <View className="mt-5">
-        {demandItems &&
-          demandItems.map((card: any, i: any) => (
+        {selectedRoute &&
+          selectedRoute.orderInsights.map((card: any, i: any) => (
             <View
               key={i}
               className={`flex-row gap-5 items-center ${

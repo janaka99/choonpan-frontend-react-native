@@ -15,7 +15,6 @@ export const updateRoutes = async (routes: any[]) => {
         route: decodedPoints,
         orderInsights: routes[i].orderInsights,
       };
-
       routesArray.push(routeWithId);
     }
     return routesArray;

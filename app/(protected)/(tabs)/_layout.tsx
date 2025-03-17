@@ -1,15 +1,15 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { Redirect, Slot, Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { useAuth } from "@/context/AuthContext";
 import { ChartColumn, House, Plus } from "lucide-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Fontisto";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useNotificationContext } from "@/context/NotificationContext";
 
 const ProtectedLayout = () => {
   const { user } = useAuth();
-
+  const { unreadCount } = useNotificationContext();
   if (!user) return <Redirect href="/sign-in" />;
 
   return (
@@ -47,23 +47,6 @@ const ProtectedLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="selectRoute"
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View className="flex-1 flex-col mt-1 items-center">
-              <View className="w-16 aspect-square rounded-full  bg-[#EDF1FF] items-center justify-center">
-                <House
-                  className="h-4 text-accent-500"
-                  color={focused ? "#737375" : "#BDBDBD"}
-                  size={26}
-                />
-              </View>
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="analytics"
         options={{
           headerShown: false,
@@ -81,25 +64,38 @@ const ProtectedLayout = () => {
         }}
       />
 
-      {/* <Tabs.Screen
-        name="selectRoute"
-        options={{
-          headerShown: false,
-          tabBarIcon: () => null,
-        }}
-      /> */}
       <Tabs.Screen
-        name="updateStock"
+        name="new-employee"
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <View className="flex-1 flex-col mt-1 items-center">
-              <View className="w-16 aspect-square rounded-full   items-center justify-center">
+              <View className="w-16 aspect-square rounded-full  bg-accent-500 items-center justify-center">
+                <Plus color={"#ffffff"} size={26} />
+              </View>
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <View className="flex-1 flex-col mt-1 items-center">
+              <View className="w-16 aspect-square rounded-full   items-center justify-center realtive">
                 <Icon2
                   name="bell-alt"
                   color={focused ? "#F1720C" : "#737375"}
                   size={26}
                 />
+                {unreadCount && unreadCount > 0 && (
+                  <View className="absolute top-0 right-0">
+                    <Text className="text-accent-500 font-Poppins-Bold text-lg">
+                      {unreadCount}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           ),
@@ -120,6 +116,35 @@ const ProtectedLayout = () => {
               </View>
             </View>
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="products"
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="updateStock"
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="selectRoute"
+        options={{
+          href: null,
+          headerShown: false,
+          tabBarStyle: { display: "none" },
+        }}
+      />
+      <Tabs.Screen
+        name="employee/[userid]"
+        options={{
+          href: null,
+          headerShown: false,
         }}
       />
     </Tabs>

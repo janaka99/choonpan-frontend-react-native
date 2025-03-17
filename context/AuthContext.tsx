@@ -1,5 +1,5 @@
 import { useContext, createContext, useState, useEffect } from "react";
-import { Text, SafeAreaView } from "react-native";
+import { SafeAreaView, Image } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { ReactNode } from "react";
 import {
@@ -10,6 +10,7 @@ import {
 } from "@/schemas/user";
 import { z } from "zod";
 import axiosInstance from "@/utils/axiosInstance";
+import images from "../constants/icons";
 
 const AuthContext = createContext<undefined | any>(undefined);
 
@@ -65,6 +66,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   };
 
+  // / CHEKED AND TESTED
+
   const signin = async (values: z.infer<typeof LoginSchema>) => {
     try {
       const { success, data } = LoginSchema.safeParse(values);
@@ -92,7 +95,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         message: response.data.message,
       };
     } catch (error) {
-      console.log("error has been found ", error);
+      console.log(error);
       return {
         error: true,
         message: "Email or password is incorrect",
@@ -108,7 +111,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!success) {
         return {
           error: true,
-          message: "Failed to register. Check form and try again ",
+          message: "Failed to register. Check the form and try again",
         };
       }
       const response = await axiosInstance.post(`/auth/register-manager`, {
@@ -134,10 +137,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         message: response.data.message,
       };
     } catch (error) {
-      console.log(error);
       return {
         error: true,
-        message: "Failed to register",
+        message: "Server error occured, Please try again later",
       };
     }
   };
@@ -148,7 +150,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!success) {
         return {
           error: true,
-          message: "Failed to register. Check form and try again ",
+          message: "Failed to register. Check the form and try again",
         };
       }
       const response = await axiosInstance.post(`/auth/user-sign-up`, {
@@ -173,7 +175,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       return {
         error: true,
-        message: "Failed to register",
+        message: "Server error occured, Please try again later",
       };
     }
   };
@@ -186,7 +188,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!success) {
         return {
           error: true,
-          message: "Failed to register. Check form and try again ",
+          message: "Failed to register. Check the form and try again",
         };
       }
       const response = await axiosInstance.post(`/auth/register-user`, {
@@ -208,10 +210,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         message: response.data.message,
       };
     } catch (error) {
-      console.log(error);
       return {
         error: true,
-        message: "Failed to register",
+        message: "Server error occured, Please try again later",
       };
     }
   };
@@ -237,8 +238,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={contextData}>
       {loading ? (
-        <SafeAreaView>
-          <Text>Loading..</Text>
+        <SafeAreaView className="h-full flex justify-center items-center">
+          <Image source={images.LogoIcon} />
         </SafeAreaView>
       ) : (
         children

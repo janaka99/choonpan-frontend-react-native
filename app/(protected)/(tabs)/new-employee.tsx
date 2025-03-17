@@ -1,70 +1,94 @@
-import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
+import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import Container from "@/components/Container";
 import PublicHeader from "@/components/PublicHeader";
 import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ManagerSignUpSchema } from "@/schemas/user";
+import { EmployeeRegisterSchema, VendorSignUpSchema } from "@/schemas/user";
 import { z } from "zod";
 import Toast from "react-native-toast-message";
+import { PROFILES } from "@/constants/data";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SectionTitle from "@/components/SectionTitle";
+import images from "@/constants/icons";
 
-const ManagerSignUp = () => {
-  const { user, managerSignUpAction } = useAuth();
+const NewEmployee = () => {
+  const { user, activeProfile, registerNewEmployee } = useAuth();
 
-  if (user) return <Redirect href="/" />;
+  if (!user) return <Redirect href="/" />;
+  const isManager = activeProfile[PROFILES.manager] || null;
+
+  console.log("user founded ", activeProfile);
+  if (!isManager) {
+    return <Redirect href="/settings" />;
+  }
+
+  if (!isManager.bakery?.id) {
+    return <Redirect href="/settings" />;
+  }
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting, isValid, dirtyFields, defaultValues },
   } = useForm({
-    resolver: zodResolver(ManagerSignUpSchema),
+    resolver: zodResolver(EmployeeRegisterSchema),
+    mode: "onChange",
     defaultValues: {
-      name: "",
-      email: "",
-      bakery: "",
-      password: "",
-      confirmPassword: "",
+      name: "Kelly",
+      email: "kelly99@gmail.com",
+      password: "$123Chamith",
+      confirmPassword: "$123Chamith",
+      bakery_id: isManager.bakery.id.toString(),
     },
   });
-
-  const onSubmit = async (data: z.infer<typeof ManagerSignUpSchema>) => {
-    try {
-      const res = await managerSignUpAction(data);
-      if (res.error) {
-        Toast.show({
-          type: "error",
-          text1: res.message,
-        });
-      } else {
-        Toast.show({
-          type: "success",
-          text1: res.message,
-        });
-      }
-    } catch (error) {
+  console.log(errors, dirtyFields);
+  const onSubmit = async (data: z.infer<typeof EmployeeRegisterSchema>) => {
+    const res = await registerNewEmployee(data);
+    if (res.error) {
       Toast.show({
         type: "error",
-        text1: "Server error occured, Please try again later",
+        text1: res.message,
       });
+    } else {
+      Toast.show({
+        type: "success",
+        text1: res.message,
+      });
+      router.push("/settings");
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
+
   return (
-    <Container logo={false}>
-      <PublicHeader title="Sign Up" pathToSignUp={true}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingBottom: 20,
-          }}
-        >
-          <View className="px-10 flex flex-col  gap-10 pb-5">
+    <SafeAreaView className="h-full pb-[75px] ">
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flexGrow: 1, // Ensures the content can grow within the ScrollView
+          paddingBottom: 20, // Add padding to the bottom for a smooth scroll
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className="px-8 pt-5 ">
+          <SectionTitle title="New employee" icon={images.PersonIcon} />
+        </View>
+        <View className="p-8 rounded-3xl">
+          <View className="p-5 flex flex-col  gap-10 pb-5  bg-white rounded-2xl">
             <Controller
               control={control}
               name="name"
@@ -75,7 +99,7 @@ const ManagerSignUp = () => {
                     value={value}
                     onChange={onChange}
                     title="Name"
-                    placeholder="Manager"
+                    placeholder="Samantha Perera"
                   />
                   {errors.name && (
                     <Text className="text-red-400 self-end">
@@ -95,31 +119,11 @@ const ManagerSignUp = () => {
                     value={value}
                     onChange={onChange}
                     title="Email"
-                    placeholder="manager@gmail.com"
+                    placeholder="samantha@gmail.com"
                   />
                   {errors.email && (
                     <Text className="text-red-400 self-end">
                       {errors.email.message}
-                    </Text>
-                  )}
-                </View>
-              )}
-            />
-            <Controller
-              control={control}
-              name="bakery"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <View>
-                  <CustomInput
-                    disabled={isSubmitting}
-                    value={value}
-                    onChange={onChange}
-                    title="Bakery"
-                    placeholder="Bakerstown, Rajagiriya"
-                  />
-                  {errors.bakery && (
-                    <Text className="text-red-400 self-end">
-                      {errors.bakery.message}
                     </Text>
                   )}
                 </View>
@@ -169,14 +173,14 @@ const ManagerSignUp = () => {
             />
             <CustomButton
               disabled={!isValid || isSubmitting}
-              text="SIGN up"
+              text="Register"
               onClick={handleSubmit(onSubmit)}
             />
           </View>
-        </ScrollView>
-      </PublicHeader>
-    </Container>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
-export default ManagerSignUp;
+export default NewEmployee;

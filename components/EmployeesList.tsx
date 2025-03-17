@@ -1,48 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Checkbox } from "react-native-paper";
 import SingleUserRow from "./SingleUserRow";
-import axiosInstance from "@/utils/axiosInstance";
-import Toast from "react-native-toast-message";
-type Props = {};
+import { Link, useRouter } from "expo-router";
 
-export default function EmployeesList({}: Props) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [employees, setEmployees] = useState([]);
+export default function EmployeesList({ employees, isLoading }: any) {
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const router = useRouter();
 
-  const fetchEmployees = async () => {
-    setIsLoading(true);
-    try {
-      const res = await axiosInstance.get("/manager/employee/all");
-      if (res.data.error) {
-        Toast.show({
-          type: "error",
-          text1: res.data.message,
-        });
-        return;
-      }
-      setEmployees(res.data.employees);
-      setIsLoading(false);
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Internal server error",
-      });
+  useEffect(() => {
+    if (employees && employees.length > 0) {
+      setSelectedUserId(employees[0].id);
+    }
+  }, [employees]);
+
+  const pushUser = () => {
+    if (selectedUserId) {
+      router.push(`/employee/${selectedUserId}`);
     }
   };
 
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
   return (
     <View className="p-5 rounded-xl bg-white gap-4 ">
-      <View className="flex-row justify-between items-center pl-2">
+      <View className="flex-row justify-between items-center pl-2 h-10">
         <Text className="font-Poppins-Bold text-3xl  text-black capitalize w-fit">
           Employees
         </Text>
-        <Icon name="arrow-right" color="#000000" size={36} />
+        {selectedUserId && (
+          <TouchableOpacity onPress={pushUser}>
+            <Icon name="arrow-right" color="#000000" size={36} />
+          </TouchableOpacity>
+        )}
       </View>
       {isLoading ? (
         <View className="w-full gap-4">
@@ -65,7 +53,14 @@ export default function EmployeesList({}: Props) {
           </View>
           <View className="w-full">
             {employees &&
-              employees.map((user, i) => <SingleUserRow user={user} key={i} />)}
+              employees.map((user: any, i: any) => (
+                <SingleUserRow
+                  user={user}
+                  key={i}
+                  setSelectedUserId={setSelectedUserId}
+                  selectedUserId={selectedUserId}
+                />
+              ))}
           </View>
         </>
       )}

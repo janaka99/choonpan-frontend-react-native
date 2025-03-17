@@ -63,9 +63,9 @@ export default function UserDashboard({}: Props) {
           <UserSalesCard />
           <AddStockCard />
           <MapCard />
-          <TouchableOpacity onPress={getLocationAndRouteInformation}>
+          {/* <TouchableOpacity onPress={getLocationAndRouteInformation}>
             <Text>Get Sales</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TopDemands />
         </View>
       </ScrollView>

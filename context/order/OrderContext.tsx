@@ -18,9 +18,14 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
     longitude: 79.987234,
     name: "",
   });
+  const [otherDrivers, setOtherDrivers] = useState<{
+    latitude: string | number;
+    longitude: string | number;
+  } | null>(null);
 
   const [routeInformationLoding, setRouteInformationLoding] = useState(true);
   const [demandItems, setDemandItems] = useState([]);
+  const [journeyStarted, setJourneyStarted] = useState(false);
   const [orders, setOrders] = useState([]);
   const [availableRoutes, setAvailableRoutes] = useState<
     {
@@ -78,6 +83,7 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
       if (res.data.error) {
         return null;
       }
+      console.log("got current Location ", res.data);
       setCurrentLocation(JSON.parse(res.data.location));
     } catch (error) {
       return null;
@@ -95,6 +101,7 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
       }
       setDemandItems(JSON.parse(res.data.demandItems));
       setOrders(JSON.parse(res.data.orders));
+      setOtherDrivers(JSON.parse(res.data.otherDrivers));
       const pr = JSON.parse(res.data.possibleRoutes);
 
       if (pr) {
@@ -102,7 +109,11 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
         if (possibleRoutes) {
           setSelectedRoute(possibleRoutes[0]);
           setAvailableRoutes(possibleRoutes);
+        } else {
+          setSelectedRoute(null);
         }
+      } else {
+        setSelectedRoute(null);
       }
     } catch (error) {
       return null;
@@ -118,6 +129,7 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     getCurrentLocation();
   }, []);
+  console.log("first");
 
   const contextData = {
     currentLocation,
@@ -130,6 +142,9 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
     currentLocationUpdating,
     selectedRoute,
     setSelectedRoute,
+    journeyStarted,
+    setJourneyStarted,
+    otherDrivers,
   };
   return (
     <OrderContext.Provider value={contextData}>

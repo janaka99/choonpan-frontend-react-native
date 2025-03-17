@@ -32,16 +32,23 @@ const VendorSignUp = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof VendorSignUpSchema>) => {
-    const res = await userSignUpAction(data);
-    if (res.error) {
+    try {
+      const res = await userSignUpAction(data);
+      if (res.error) {
+        Toast.show({
+          type: "error",
+          text1: res.message,
+        });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: res.message,
+        });
+      }
+    } catch (error) {
       Toast.show({
         type: "error",
-        text1: res.message,
-      });
-    } else {
-      Toast.show({
-        type: "success",
-        text1: res.message,
+        text1: "Server error occured, Please try again later",
       });
     }
   };
@@ -52,8 +59,8 @@ const VendorSignUp = () => {
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
-            flexGrow: 1, // Ensures the content can grow within the ScrollView
-            paddingBottom: 20, // Add padding to the bottom for a smooth scroll
+            flexGrow: 1,
+            paddingBottom: 20,
           }}
         >
           <View className="px-10 flex flex-col  gap-10 pb-5">

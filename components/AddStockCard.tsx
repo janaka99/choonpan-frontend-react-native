@@ -80,7 +80,7 @@ export default function AddStockCard({
   useEffect(() => {
     reset({
       name: product?.name || "",
-      price: product?.price || 0,
+      price: product?.price ? Number(product.price) : 0,
       stock: product?.stock || 0,
       id: product?.id || null,
     });

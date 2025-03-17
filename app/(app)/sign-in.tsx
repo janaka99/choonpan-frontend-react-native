@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Touchable,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Redirect } from "expo-router";
@@ -19,9 +13,8 @@ import { z } from "zod";
 import Toast from "react-native-toast-message";
 
 const SignIn = () => {
-  const { session, signin, checkAuth } = useAuth();
-
-  if (session) return <Redirect href="/" />;
+  const { user, signin } = useAuth();
+  if (user) return <Redirect href="/" />;
 
   const {
     control,
@@ -31,21 +24,28 @@ const SignIn = () => {
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "chamith88@gmail.com",
-      password: "$123Chamith1",
+      password: "$123Chamith",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
-    const res = await signin(data);
-    if (res.error) {
+    try {
+      const res = await signin(data);
+      if (res.error) {
+        Toast.show({
+          type: "error",
+          text1: res.message,
+        });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: res.message,
+        });
+      }
+    } catch (error) {
       Toast.show({
         type: "error",
-        text1: res.message,
-      });
-    } else {
-      Toast.show({
-        type: "success",
-        text1: res.message,
+        text1: "Server error occured, Please try again later",
       });
     }
   };

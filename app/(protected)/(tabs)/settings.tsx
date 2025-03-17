@@ -3,7 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "@/components/Card";
 import { useAuth } from "@/context/AuthContext";
-import { Redirect, useRouter } from "expo-router";
+import { Link, Redirect, useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
 import { PROFILES } from "@/constants/data";
 
@@ -64,6 +64,14 @@ const settings = (props: Props) => {
               <Text className="text-xl font-Poppins-Bold">Account</Text>
               <Text className="text-xl font-Poppins-Bold">Edit Profile</Text>
               <Text className="text-xl font-Poppins-Bold">Privacy</Text>
+              {isManager && (
+                <Link
+                  href="/new-employee"
+                  className="text-xl font-Poppins-Bold"
+                >
+                  Add new employee
+                </Link>
+              )}
               <Text className="text-xl font-Poppins-Bold">Settings</Text>
             </Card>
             <Card className="gap-5">
