@@ -83,7 +83,6 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
       if (res.data.error) {
         return null;
       }
-      console.log("got current Location ", res.data);
       setCurrentLocation(JSON.parse(res.data.location));
     } catch (error) {
       return null;
@@ -129,7 +128,6 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     getCurrentLocation();
   }, []);
-  console.log("first");
 
   const contextData = {
     currentLocation,

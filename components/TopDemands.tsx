@@ -6,19 +6,7 @@ import { useOrderContext } from "@/context/order/OrderContext";
 type Props = {};
 
 export default function TopDemands({}: Props) {
-  const {
-    currentLocation,
-    availableRoutes,
-    orders,
-    demandItems,
-    updateCurrentLocation,
-    getLocationAndRouteInformation,
-    routeInformationLoding,
-    currentLocationUpdating,
-    selectedRoute,
-    setSelectedRoute,
-  } = useOrderContext();
-  console.log(selectedRoute);
+  const { selectedRoute } = useOrderContext();
   return (
     <Card className="mb-5">
       <Text className="font-Poppins-Bold text-3xl  text-gray-100  w-fit  ">
@@ -40,19 +28,19 @@ export default function TopDemands({}: Props) {
                 className="w-14 aspect-square rounded-xl "
                 style={{
                   backgroundColor:
-                    card.demand == "High"
+                    card.demandStatus == "HIGH"
                       ? "#BC1A1A82"
-                      : card.demand == "Medium"
+                      : card.demandStatus == "MEDIUM"
                       ? "#F188186B"
                       : "#F9CD9E",
                 }}
               ></View>
               <View>
                 <Text className="text-xl  text-black-300 font-Poppins-Bold">
-                  {card.name}
+                  {card.itemName}
                 </Text>
                 <Text className="text-xl  text-gray-100 font-Poppins-Regular">
-                  {card.demand}
+                  {card.demandStatus}
                 </Text>
               </View>
             </View>

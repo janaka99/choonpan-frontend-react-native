@@ -62,7 +62,7 @@ const Notifications = (props: Props) => {
           </View>
           {error ? (
             <View className="w-full flex-grow justify-center items-center gap-2">
-              <Text className="text-lg">{error}</Text>
+              <Text className="text-lg">{`${error}`}</Text>
               <CustomButton
                 text="Refresh"
                 onClick={reloadNotification}
@@ -72,13 +72,15 @@ const Notifications = (props: Props) => {
             </View>
           ) : (
             <View className="px-8 mt-6 gap-3">
-              {unreadCount && unreadCount > 0 && (
-                <CustomButton
-                  varient="small_accent"
-                  onClick={markAllAsRead}
-                  text="Mark all as read"
-                />
-              )}
+              {unreadCount ? (
+                unreadCount > 0 ? (
+                  <CustomButton
+                    varient="small_accent"
+                    onClick={markAllAsRead}
+                    text="Mark all as read"
+                  />
+                ) : null
+              ) : null}
               {notifications.map((notification: any, i: any) => (
                 <TouchableOpacity
                   key={i}

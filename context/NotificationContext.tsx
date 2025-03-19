@@ -82,7 +82,6 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
         setError(res.data.message);
       } else if (res.data.notifications) {
         const notififications = JSON.parse(res.data.notifications);
-        console.log("notifications ", notifications);
         setNotifications(notififications);
       }
     } catch (error) {

@@ -46,7 +46,6 @@ const LocationProvider = ({ children }: { children: ReactNode }) => {
             distanceInterval: 5,
           },
           (newLocation) => {
-            console.log("Location fetched");
             setLiveLocation({
               latitude: newLocation.coords.latitude,
               longitude: newLocation.coords.longitude,

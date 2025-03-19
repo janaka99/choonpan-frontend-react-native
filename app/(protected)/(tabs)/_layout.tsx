@@ -89,13 +89,11 @@ const ProtectedLayout = () => {
                   color={focused ? "#F1720C" : "#737375"}
                   size={26}
                 />
-                {unreadCount && unreadCount > 0 && (
-                  <View className="absolute top-0 right-0">
-                    <Text className="text-accent-500 font-Poppins-Bold text-lg">
-                      {unreadCount}
-                    </Text>
-                  </View>
-                )}
+                <View className="absolute top-0 right-0">
+                  <Text className="text-accent-500 font-Poppins-Bold text-lg">
+                    {unreadCount == 0 ? "" : unreadCount.toString()}
+                  </Text>
+                </View>
               </View>
             </View>
           ),
