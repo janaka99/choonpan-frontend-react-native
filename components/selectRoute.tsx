@@ -12,6 +12,7 @@ import {
 import { ALL_ORDERS, ROUTE_WITH_ORDERS } from "@/constants/tempory";
 import { getRoutes } from "@/utils/maphelp";
 import MapHeader from "@/components/MapHeader";
+import { useOrderContext } from "@/context/order/OrderContext";
 type Props = {};
 
 export const options = {
@@ -19,6 +20,8 @@ export const options = {
 };
 
 const selectRoute = (props: Props) => {
+  const { currentJourney } = useOrderContext();
+
   const [locations, setLocations] =
     useState<{ latitude: number; longitude: number }[]>(ALL_ORDERS);
   const [location, setLocation] = useState<{
@@ -69,7 +72,7 @@ const selectRoute = (props: Props) => {
   return (
     <>
       <SafeAreaView className="rounded-xl flex-grow overflow-hidden w-full ">
-        <MapHeader title="SELECT ROUTE" />
+        {!currentJourney && <MapHeader title="SELECT ROUTE" />}
         <MapView
           style={MapStyles.map}
           region={{

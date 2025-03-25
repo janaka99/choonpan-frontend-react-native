@@ -22,8 +22,22 @@ export const SelectRouteButton = () => {
   );
 };
 
-export const InformationButton = () => {
-  const { currentLocation, setJourneyStarted } = useOrderContext();
+export const InformationButton = ({
+  selectedRoute,
+}: {
+  selectedRoute: any;
+}) => {
+  const {
+    currentLocation,
+    setJourneyStarted,
+    currentJourney,
+    currentJourneyUpdating,
+    startJourney,
+    endJourney,
+    currentJourneyEnding,
+    routeInformationLoding,
+  } = useOrderContext();
+
   return (
     <View className="w-full absolute bottom-0 left-0 bg-white px-10 py-12 rounded-t-3xl  items-start gap-10">
       <View className="flex-row justify-center items-center gap-2">
@@ -35,11 +49,39 @@ export const InformationButton = () => {
           {/* <Text className="text-2xl font-Poppins-Medium ">Deal Place</Text> */}
         </View>
       </View>
-      <CustomButton
-        text="START JOURNEY"
-        varient="small_accent"
-        onClick={() => setJourneyStarted(true)}
-      />
+      {currentJourney ? (
+        <View className="flex-row gap-5 justify-center w-full">
+          <Link
+            href="/updateStock"
+            disabled={currentJourneyEnding}
+            className="bg-accent-500 text-white px-5 py-3 rounded-xl text-center w-[40%]"
+          >
+            SELL STOCK
+          </Link>
+          <CustomButton
+            text="END JOURNEY"
+            varient="small_accent"
+            className="w-[40%] "
+            // onClick={() => setJourneyStarted(true)}
+            disabled={currentJourneyEnding}
+            onClick={() => {
+              console.log(selectedRoute);
+              endJourney(currentJourney.id);
+            }}
+          />
+        </View>
+      ) : (
+        <CustomButton
+          text="START JOURNEY"
+          varient="small_accent"
+          // onClick={() => setJourneyStarted(true)}
+          disabled={currentJourneyUpdating || routeInformationLoding}
+          onClick={() => {
+            console.log(selectedRoute);
+            startJourney(selectedRoute);
+          }}
+        />
+      )}
     </View>
   );
 };

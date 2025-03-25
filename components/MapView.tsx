@@ -18,6 +18,8 @@ const MapViewComponent = () => {
     selectedRoute,
     setSelectedRoute,
     otherDrivers,
+    currentJourney,
+    remainingRoute,
   } = useOrderContext();
 
   const { liveLocation } = useLocationContext();
@@ -29,7 +31,6 @@ const MapViewComponent = () => {
   if (routeInformationLoding || currentLocationUpdating) {
     return <View className="w-full h-full bg-gray-50"></View>;
   }
-
   return (
     <MapView
       style={MapStyles.map}
@@ -98,25 +99,34 @@ const MapViewComponent = () => {
             </View>
           </Marker>
         ))}
-      {availableRoutes.length >= 1 &&
-        availableRoutes.map((rt: any, i: any) => {
-          return (
+      {currentJourney
+        ? currentJourney.route && (
             <Polyline
-              key={i}
-              coordinates={rt.route}
+              coordinates={currentJourney.route}
               strokeWidth={5}
-              strokeColor={
-                selectedRoute
-                  ? selectedRoute.id == rt.id
-                    ? "#F1720C"
-                    : "#bebebe"
-                  : "#bebebe"
-              }
-              onPress={() => onMarkerClick(rt)}
+              strokeColor={"#F1720C"}
               tappable
             />
-          );
-        })}
+          )
+        : availableRoutes.length >= 1 &&
+          availableRoutes.map((rt: any, i: any) => {
+            return (
+              <Polyline
+                key={i}
+                coordinates={rt.route}
+                strokeWidth={5}
+                strokeColor={
+                  selectedRoute
+                    ? selectedRoute.id == rt.id
+                      ? "#F1720C"
+                      : "#bebebe"
+                    : "#bebebe"
+                }
+                onPress={() => onMarkerClick(rt)}
+                tappable
+              />
+            );
+          })}
     </MapView>
   );
 };

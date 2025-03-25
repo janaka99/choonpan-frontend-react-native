@@ -24,7 +24,7 @@ export default function UserDashboard({}: Props) {
   const { getLocationAndRouteInformation } = useOrderContext();
   const [refreshing, setRefreshing] = useState(false);
   const [locationSearchingOn, setLocationSearchingOn] = useState(false);
-  const { currentLocationUpdating } = useOrderContext();
+  const { currentLocationUpdating, currentJourney } = useOrderContext();
 
   const onRefresh = async () => {
     if (refreshing) return;
@@ -59,6 +59,7 @@ export default function UserDashboard({}: Props) {
         {locationSearchingOn && (
           <GooglePlaces setLocationSearchingOn={setLocationSearchingOn} />
         )}
+
         <View className="gap-10 px-7 pt-5">
           <UserSalesCard />
           <AddStockCard />

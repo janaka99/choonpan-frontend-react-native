@@ -1,4 +1,4 @@
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 import React, { useState } from "react";
 import MapHeader from "@/components/MapHeader";
 import { useOrderContext } from "@/context/order/OrderContext";
@@ -15,21 +15,32 @@ export const options = {
 };
 
 const selectRoute = (props: Props) => {
-  const { selectedRoute, journeyStarted, setJourneyStarted } =
-    useOrderContext();
+  const {
+    selectedRoute,
+    journeyStarted,
+    currentJourneyUpdating,
+    currentJourney,
+  } = useOrderContext();
   return (
     <>
-      <SafeAreaView className="rounded-xl h-full overflow-hidden w-full ">
-        <MapHeader title="SELECT ROUTE" />
+      <SafeAreaView className="rounded-xl h-full overflow-hidden w-full realative">
+        {currentJourney && <MapHeader title="SELECT ROUTE" />}
         <MapViewComponent />
         {selectedRoute ? (
           journeyStarted ? (
             <SellStockouteButton />
           ) : (
-            <InformationButton />
+            <InformationButton selectedRoute={selectedRoute} />
           )
         ) : (
           <SelectRouteButton />
+        )}
+        {currentJourneyUpdating && (
+          <View className="w-full h-full absolute top-0 left-0 z-50 bg-gray-100/40 flex justify-center items-center">
+            <Text className="text-center font-Poppins-Bold">
+              Starting new journey...
+            </Text>
+          </View>
         )}
       </SafeAreaView>
     </>

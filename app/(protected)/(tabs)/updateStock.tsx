@@ -260,7 +260,7 @@ const UpdateStock = (props: Props) => {
         }
       >
         {error ? (
-          <View className="w-full flex-grow justify-center items-center gap-2">
+          <View className="w-full flex-grow justify-center items-center gap-2 ">
             <Text className="text-lg">{error}</Text>
             <CustomButton
               text="Refresh"
@@ -271,7 +271,7 @@ const UpdateStock = (props: Props) => {
             />
           </View>
         ) : (
-          <View className="">
+          <View className="pb-[85px]">
             <View className="mt-5 px-10   justify-start w-full items-start">
               <TouchableOpacity
                 onPress={() => {
@@ -291,22 +291,15 @@ const UpdateStock = (props: Props) => {
               <View className="flex-row gap-5">
                 <CustomButton
                   varient="small_accent"
-                  text="Update"
+                  text="Place Order"
                   onClick={submitOrder}
-                  width="w-2/4"
+                  width="w-full"
                   disabled={
                     order === null ||
                     order.orders.length <= 0 ||
                     orderFilling ||
                     isStockResetting
                   }
-                />
-                <CustomButton
-                  varient="small_accent"
-                  text="Reset Stock"
-                  onClick={resetProducts}
-                  width="w-2/4"
-                  disabled={orderFilling || isStockResetting}
                 />
               </View>
             </View>

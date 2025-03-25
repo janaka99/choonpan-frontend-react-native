@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import images from "@/constants/icons";
 import AddStockCard from "@/components/AddStockCard";
 import SectionTitle from "@/components/SectionTitle";
+import Toast from "react-native-toast-message";
 
 type Props = {};
 
@@ -22,6 +23,7 @@ const products = (props: Props) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [isStockResetting, setIsStockResetting] = useState(false);
   const [error, setError] = useState<null | string>(
     "server Error Occured Try Again"
   );
@@ -32,6 +34,32 @@ const products = (props: Props) => {
     setIsLoading(true);
     await getProducts();
     setIsLoading(false);
+  };
+
+  const resetProducts = async () => {
+    try {
+      setIsStockResetting(true);
+      const res = await axiosInstance.post("/employee/products/reset");
+      if (res.data.error) {
+        Toast.show({
+          type: "error",
+          text1: res.data.message || "Error",
+        });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: res.data.message || "Error",
+        });
+        loadProducts();
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Server error occured, Please try again later",
+      });
+    } finally {
+      setIsStockResetting(false);
+    }
   };
 
   const getProducts = async () => {
@@ -115,6 +143,15 @@ const products = (props: Props) => {
           <View>
             <View className="px-8 pt-5">
               <SectionTitle title="All products" icon={images.ProductsIcon} />
+            </View>
+            <View className="px-8 pt-5">
+              <CustomButton
+                varient="small_accent"
+                text="Reset Stock"
+                onClick={resetProducts}
+                width="w-full"
+                disabled={isStockResetting}
+              />
             </View>
             {products && products.length <= 0 ? (
               <View className="h-full flex justify-center items-center gap-3">

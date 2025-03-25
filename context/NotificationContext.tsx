@@ -104,6 +104,7 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
         const noti = JSON.parse(res.data.notifications);
         setNotifications(noti);
       }
+      getUnreadNotificationCount();
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -126,6 +127,7 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
         getUnreadNotificationCount();
         getAllNotifications();
       }
+      getUnreadNotificationCount();
     } catch (error) {
     } finally {
       setIsLoading(false);

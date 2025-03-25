@@ -29,7 +29,7 @@ export default function UserHeader({
   setLocationSearchingOn,
   locationSearchingOn,
 }: Props) {
-  const { currentLocation, isLoading } = useOrderContext();
+  const { currentLocation, isLoading, currentJourney } = useOrderContext();
 
   const handleLocationPress = () => {
     setLocationSearchingOn(!locationSearchingOn);
@@ -44,6 +44,10 @@ export default function UserHeader({
           </View>
           {isLoading ? (
             <View className=" bg-gray-50 h-20 w-40 rounded-xl"></View>
+          ) : currentJourney ? (
+            <View className="flex flex-row items-center h-full">
+              <Text className="font-Poppins-Bold">Journey on</Text>
+            </View>
           ) : (
             <View>
               <Text className="text-xl font-Poppins-Bold text-accent-500">
