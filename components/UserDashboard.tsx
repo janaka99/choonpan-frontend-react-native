@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import {
   RefreshControl,
   ScrollView,
+  StatusBar,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,7 +21,6 @@ type Props = {};
 
 export default function UserDashboard({}: Props) {
   const { user } = useAuth();
-  const { getLocationAndRouteInformation } = useOrderContext();
   const [refreshing, setRefreshing] = useState(false);
   const [locationSearchingOn, setLocationSearchingOn] = useState(false);
   const { currentLocationUpdating, currentJourney } = useOrderContext();
@@ -49,6 +48,11 @@ export default function UserDashboard({}: Props) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
         <UserHeader
           user={user}
           className="pt-5"

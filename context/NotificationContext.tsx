@@ -1,72 +1,8 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { ReactNode } from "react";
-import * as Location from "expo-location";
 import axiosInstance from "@/utils/axiosInstance";
 
 const NotificationContext = createContext<undefined | any>(undefined);
-
-const notificationSamples = [
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: false,
-    id: 1,
-  },
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: true,
-    id: 2,
-  },
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: false,
-    id: 3,
-  },
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: false,
-    id: 3,
-  },
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: false,
-    id: 3,
-  },
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: false,
-    id: 3,
-  },
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: false,
-    id: 3,
-  },
-  {
-    title: "Low Stock",
-    description: "Item one, two and three low on stock",
-    isRead: false,
-    id: 3,
-  },
-  //   {
-  //     title: "Low Stock",
-  //     description: "Item one, two and three low on stock",
-  //     isRead: false,
-  //     id: 3,
-  //   },
-  //   {
-  //     title: "Low Stock",
-  //     description: "Item one, two and three low on stock",
-  //     isRead: false,
-  //     id: 3,
-  //   },
-];
 
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState([]);

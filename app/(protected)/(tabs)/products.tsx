@@ -101,23 +101,18 @@ const products = (props: Props) => {
     setRefreshing(false);
   };
 
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
-
   if (isLoading) {
     return (
       <View className="h-full flex justify-center items-center">
-        <Animated.View style={{ transform: [{ rotate: spin }] }}>
-          <Loader2 color="#F1720C" size={40} />
-        </Animated.View>
+        <View className="animate-spin">
+          <Loader2 color="#F1720C" size={40} className="animate-spin" />
+        </View>
       </View>
     );
   }
 
   return (
-    <SafeAreaView className="h-full pb-[75px] ">
+    <SafeAreaView className="h-full pb-[75px] bg-[#f7f7f7] ">
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -129,56 +124,66 @@ const products = (props: Props) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {error ? (
-          <View className="w-full flex-grow justify-center items-center gap-2">
-            <Text className="text-lg">{error}</Text>
-            <CustomButton
-              text="Refresh"
-              onClick={loadProducts}
-              width="w-fit"
-              varient="small_accent"
+        <View>
+          <View className="px-8 pt-5">
+            <SectionTitle
+              title="All products"
+              icon={images.ProductsIcon}
+              backLink="/dashboard-landing"
             />
           </View>
-        ) : (
-          <View>
-            <View className="px-8 pt-5">
-              <SectionTitle title="All products" icon={images.ProductsIcon} />
-            </View>
-            <View className="px-8 pt-5">
+          {error ? (
+            <View className="w-full h-full justify-center items-center gap-2">
+              <Text className="text-lg">Oops! Something Went Wrong!</Text>
               <CustomButton
+                text="Refresh"
+                onClick={loadProducts}
+                width="w-fit"
                 varient="small_accent"
-                text="Reset Stock"
-                onClick={resetProducts}
-                width="w-full"
-                disabled={isStockResetting}
               />
             </View>
-            {products && products.length <= 0 ? (
-              <View className="h-full flex justify-center items-center gap-3">
-                <Text className="text-lg">No products available</Text>
-                <CustomButton
-                  text="Add product"
-                  width="w-fit"
-                  onClick={() => {
-                    router.push("/dashboard-landing");
-                  }}
-                  varient="small_accent"
-                />
-              </View>
-            ) : (
-              <View className="px-8 pt-8 gap-8">
-                {products.map((product: any, i) => (
-                  <AddStockCard
-                    update
-                    product={product}
-                    key={i}
-                    getProducts={getProducts}
+          ) : (
+            <View className="h-full">
+              {products && products.length > 0 ? (
+                <View className="px-8 pt-5">
+                  <CustomButton
+                    varient="small_accent"
+                    text="Reset Stock"
+                    onClick={resetProducts}
+                    width="w-full"
+                    disabled={isStockResetting}
                   />
-                ))}
-              </View>
-            )}
-          </View>
-        )}
+                </View>
+              ) : (
+                <></>
+              )}
+              {products && products.length <= 0 ? (
+                <View className="h-full flex justify-center items-center gap-3">
+                  <Text className="text-lg">No products available</Text>
+                  <CustomButton
+                    text="Add product"
+                    width="w-fit"
+                    onClick={() => {
+                      router.push("/dashboard-landing");
+                    }}
+                    varient="small_accent"
+                  />
+                </View>
+              ) : (
+                <View className="px-8 pt-8 gap-8">
+                  {products.map((product: any, i) => (
+                    <AddStockCard
+                      update
+                      product={product}
+                      key={i}
+                      getProducts={getProducts}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

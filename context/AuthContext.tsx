@@ -31,7 +31,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       if (user) {
         const profiles = user.profiles;
-
         // Find the profile object that contains the specified profileType key
         const profile = profiles.find((p: any) => p[profileType]);
         if (profile) {
@@ -65,8 +64,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     setLoading(false);
   };
-
-  // / CHEKED AND TESTED
 
   const signin = async (values: z.infer<typeof LoginSchema>) => {
     try {
@@ -130,7 +127,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (response.data.data.user && response.data.data.token) {
         await updateTokenInStore(response.data.data.token);
         setUser(response.data.data.user);
-        setActiveProfile(response.data.data.user.profiles[1]);
+        setActiveProfile(response.data.data.user.profiles[0]);
       }
       return {
         success: true,
@@ -221,6 +218,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     await await SecureStore.deleteItemAsync("token");
     setUser(null);
+    setActiveProfile(null);
     setLoading(false);
   };
 

@@ -6,11 +6,14 @@ import { ChartColumn, House, Plus } from "lucide-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Fontisto";
 import { useNotificationContext } from "@/context/NotificationContext";
+import { PROFILES } from "@/constants/data";
 
 const ProtectedLayout = () => {
-  const { user } = useAuth();
+  const { user, activeProfile } = useAuth();
   const { unreadCount } = useNotificationContext();
   if (!user) return <Redirect href="/sign-in" />;
+
+  const isManager = activeProfile[PROFILES.manager] ? true : false;
 
   return (
     <Tabs
@@ -63,20 +66,29 @@ const ProtectedLayout = () => {
           ),
         }}
       />
-
-      <Tabs.Screen
-        name="new-employee"
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View className="flex-1 flex-col mt-1 items-center">
-              <View className="w-16 aspect-square rounded-full  bg-accent-500 items-center justify-center">
-                <Plus color={"#ffffff"} size={26} />
+      {isManager ? (
+        <Tabs.Screen
+          name="new-employee"
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <View className="flex-1 flex-col mt-1 items-center">
+                <View className="w-16 aspect-square rounded-full  bg-accent-500 items-center justify-center">
+                  <Plus color={"#ffffff"} size={26} />
+                </View>
               </View>
-            </View>
-          ),
-        }}
-      />
+            ),
+          }}
+        />
+      ) : (
+        <Tabs.Screen
+          name="new-employee"
+          options={{
+            href: null,
+            headerShown: false,
+          }}
+        />
+      )}
       <Tabs.Screen
         name="notifications"
         options={{

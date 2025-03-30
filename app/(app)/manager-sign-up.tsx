@@ -23,6 +23,7 @@ const ManagerSignUp = () => {
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     resolver: zodResolver(ManagerSignUpSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
       email: "",

@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 type Props = {};
 import images from "@/constants/icons";
@@ -11,14 +17,16 @@ import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { formatNumber } from "@/utils/formatPrice";
 import { useAuth } from "@/context/AuthContext";
-import { Redirect } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import BestSelling from "@/components/BestSelling";
+import { ChevronLeft } from "lucide-react-native";
 
 const Analytics = (props: Props) => {
   const { user } = useAuth();
   const [totalSales, setTotalSales] = useState<null | number>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);
   const [SalesLoading, setSalesLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   if (!user) return <Redirect href="/sign-in" />;
 
@@ -45,6 +53,12 @@ const Analytics = (props: Props) => {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchSalesData();
+    setRefreshing(false);
+  };
+
   useEffect(() => {
     fetchSalesData();
   }, []);
@@ -58,17 +72,22 @@ const Analytics = (props: Props) => {
           backgroundColor: "#f7f7f7",
           marginBottom: 80,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View className="gap-10 mb-4">
           <View className="px-7 pt-5 gap-4 ">
-            <Text className="text-center text-2xl text-gray-300 font-Poppins-Bold">
-              FINANCIAL SUMMARY
-            </Text>
+            <View className="flex-row items-center gap-3">
+              <Link href="/dashboard-landing" className="">
+                <ChevronLeft size={32} color="#000000" />
+              </Link>
+              <Text className="text-center text-2xl text-gray-300 font-Poppins-Bold">
+                FINANCIAL SUMMARY
+              </Text>
+            </View>
             <View className="flex-row justify-between items-center gap-2 ">
               <View className="pt-1 flex-row gap-2">
-                <Text className="font-Poppins-Regular text-2xl text-gray-300 ">
-                  Employee -
-                </Text>
                 <Text className="font-Poppins-Regular text-2xl  text-gray-300 capitalize w-fit">
                   {user.name}
                 </Text>
@@ -94,10 +113,10 @@ const Analytics = (props: Props) => {
           </View>
           <View className="px-7 gap-4">
             <SectionTitle title="Analytics" icon={images.AnalyticsIcon} />
-            <SalesChart />
+            <SalesChart refreshing={refreshing} />
           </View>
           <View className="px-7 gap-4">
-            <BestSelling />
+            <BestSelling refreshing={refreshing} />
           </View>
         </View>
       </ScrollView>

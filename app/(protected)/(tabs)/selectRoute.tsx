@@ -22,9 +22,9 @@ const selectRoute = (props: Props) => {
     currentJourney,
   } = useOrderContext();
   return (
-    <>
-      <SafeAreaView className="rounded-xl h-full overflow-hidden w-full realative">
-        {currentJourney && <MapHeader title="SELECT ROUTE" />}
+    <SafeAreaView className="rounded-xl h-full overflow-hidden w-full realative">
+      <View className="h-full relative">
+        {!currentJourney && <MapHeader title="SELECT ROUTE" />}
         <MapViewComponent />
         {selectedRoute ? (
           journeyStarted ? (
@@ -42,8 +42,8 @@ const selectRoute = (props: Props) => {
             </Text>
           </View>
         )}
-      </SafeAreaView>
-    </>
+      </View>
+    </SafeAreaView>
   );
 };
 

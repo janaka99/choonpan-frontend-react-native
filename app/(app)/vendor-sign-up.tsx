@@ -24,10 +24,10 @@ const VendorSignUp = () => {
   } = useForm({
     resolver: zodResolver(VendorSignUpSchema),
     defaultValues: {
-      name: "samantha",
-      email: "samantha@gmail.com",
-      password: "$123Chamith",
-      confirmPassword: "$123Chamith",
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 

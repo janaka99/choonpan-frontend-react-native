@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SingleUserRow from "./SingleUserRow";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function EmployeesList({ employees, isLoading }: any) {
   const [selectedUserId, setSelectedUserId] = useState(null);

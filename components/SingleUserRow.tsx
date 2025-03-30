@@ -1,6 +1,7 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { Checkbox } from "react-native-paper";
+import { Check } from "lucide-react-native";
 
 type Props = {
   user: any;
@@ -19,9 +20,22 @@ const SingleUserRow = ({ user, selectedUserId, setSelectedUserId }: Props) => {
     }
   };
   return (
-    <View className="flex-row gap-2 mb-2">
-      <View className="">
-        <Checkbox status={checked} color="#000000" onPress={handleClick} />
+    <TouchableOpacity
+      className="flex-row items-center gap-2 mb-2"
+      onPress={handleClick}
+    >
+      <View
+        style={{
+          borderWidth: 1,
+          borderColor: "#000",
+          borderRadius: 5,
+          backgroundColor: `${checked == "checked" ? "#000" : "#fff"}`,
+          width: 20,
+          height: 20,
+        }}
+      >
+        {/* <Checkbox status={checked} color="#ffffff" onPress={handleClick} /> */}
+        {checked == "checked" && <Check color="#fff" size={18} />}
       </View>
       <View className="flex-grow bg-gray-50 flex-row px-4 py-3 rounded-2xl items-center ">
         <Text className="text-xl font-Poppins-Medium text-gray-400 w-10">
@@ -31,7 +45,7 @@ const SingleUserRow = ({ user, selectedUserId, setSelectedUserId }: Props) => {
           {user.user.name}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -1,18 +1,18 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { BarChart, barDataItem } from "react-native-gifted-charts";
-import { BAR_DATA, formattedBarData, yAxisLabels } from "@/constants/tempory";
+import { formattedBarData, yAxisLabels } from "@/constants/tempory";
 import NormalText from "./NormalText";
 import H2Text from "./H2Text";
 import ColoredSmallText from "./ColoredSmallText";
 import { ChevronDown, ChevronUp } from "lucide-react-native";
-import { useOrderContext } from "@/context/order/OrderContext";
 import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
-import { isLoading } from "expo-font";
 import { formatNumber } from "@/utils/formatPrice";
 
-type Props = {};
+type Props = {
+  refreshing: boolean;
+};
 
 enum Period {
   week = "week",
@@ -20,13 +20,14 @@ enum Period {
   year = "year",
 }
 
-const SalesChart = (props: Props) => {
+const SalesChart = ({ refreshing }: Props) => {
   const [barData, setBarData] = React.useState<barDataItem[]>(formattedBarData);
   const [chartKey, setChartKey] = React.useState(0);
   const [SalesLoading, setSalesLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("This Week");
   const [totalValue, setTotalValue] = useState<string | null>(null);
+  const [differencePercentage, setDifferencePercentage] = useState(0);
 
   const options = ["This Week", "Last 30 Days", "Last Year"];
 
@@ -72,6 +73,7 @@ const SalesChart = (props: Props) => {
 
       setBarData(res.data.sales);
       const totalValue = calculateTotal(res.data.sales);
+      setDifferencePercentage(JSON.parse(res.data.differencePercentage));
       setTotalValue(formatNumber(totalValue));
       setSalesLoading(false);
     } catch (error) {
@@ -84,7 +86,7 @@ const SalesChart = (props: Props) => {
 
   useEffect(() => {
     fetchSalesData();
-  }, [selectedFilter]);
+  }, [selectedFilter, refreshing]);
 
   return (
     <View className="p-5 rounded-xl bg-white gap-4 w-full">
@@ -99,7 +101,15 @@ const SalesChart = (props: Props) => {
                 <H2Text className="mt-2" color="text-[#0F172A]">
                   {totalValue}
                 </H2Text>
-                <ColoredSmallText color="text-[#ED4F9D]">-20%</ColoredSmallText>
+                <ColoredSmallText
+                  color={` ${
+                    differencePercentage && differencePercentage < 0
+                      ? "text-[#ED4F9D]"
+                      : "text-[#4fed64]"
+                  }`}
+                >
+                  {`${differencePercentage}`}%
+                </ColoredSmallText>
               </>
             )}
           </View>

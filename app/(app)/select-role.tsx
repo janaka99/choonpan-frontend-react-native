@@ -65,20 +65,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-{
-  /* <TextInput
-    placeholder="Email"
-    value={email}
-    onChangeText={(text) => setEmail(text)}
-    />
-    <TextInput
-    placeholder="Password"
-    value={password}
-    onChangeText={(text) => setPassword(text)}
-    secureTextEntry
-    />
-    <TouchableOpacity onPress={handleSubmit}>
-    <Text>Login</Text>
-    </TouchableOpacity> */
-}

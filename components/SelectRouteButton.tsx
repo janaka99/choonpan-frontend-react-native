@@ -44,9 +44,8 @@ export const InformationButton = ({
         <Image source={images.LocationMark} />
         <View className="">
           <Text className="text-2xl font-Poppins-Bold ">
-            {currentLocation.name}
+            {currentLocation.name ? currentLocation.name : ""}
           </Text>
-          {/* <Text className="text-2xl font-Poppins-Medium ">Deal Place</Text> */}
         </View>
       </View>
       {currentJourney ? (
@@ -61,7 +60,7 @@ export const InformationButton = ({
           <CustomButton
             text="END JOURNEY"
             varient="small_accent"
-            className="w-[40%] "
+            width="w-[40%]"
             // onClick={() => setJourneyStarted(true)}
             disabled={currentJourneyEnding}
             onClick={() => {

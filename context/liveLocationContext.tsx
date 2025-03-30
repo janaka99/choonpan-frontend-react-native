@@ -1,8 +1,5 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { ReactNode } from "react";
-import axiosInstance from "@/utils/axiosInstance";
-import Toast from "react-native-toast-message";
-import { updateRoutes } from "@/utils/maphelp";
 import * as Location from "expo-location";
 
 const LocationContext = createContext<undefined | any>(undefined);

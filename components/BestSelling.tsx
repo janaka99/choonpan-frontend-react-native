@@ -20,7 +20,7 @@ const formatDate = (date: Date) => {
   return `${year}-${month}-${day}`;
 };
 
-export default function BestSelling() {
+export default function BestSelling({ refreshing }: { refreshing: boolean }) {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
 
@@ -77,7 +77,7 @@ export default function BestSelling() {
 
   useEffect(() => {
     fetchEmployees();
-  }, [selectedRange]);
+  }, [selectedRange, refreshing]);
 
   return (
     <View className="p-5 rounded-xl bg-white gap-4 ">

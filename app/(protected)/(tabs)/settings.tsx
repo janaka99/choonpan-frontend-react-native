@@ -64,14 +64,6 @@ const settings = (props: Props) => {
               <Text className="text-xl font-Poppins-Bold">Account</Text>
               <Text className="text-xl font-Poppins-Bold">Edit Profile</Text>
               <Text className="text-xl font-Poppins-Bold">Privacy</Text>
-              {isManager && (
-                <Link
-                  href="/new-employee"
-                  className="text-xl font-Poppins-Bold"
-                >
-                  Add new employee
-                </Link>
-              )}
               <Text className="text-xl font-Poppins-Bold">Settings</Text>
             </Card>
             <Card className="gap-5">
@@ -80,11 +72,13 @@ const settings = (props: Props) => {
             </Card>
           </View>
           <View className="px-7 gap-4">
-            <CustomButton
-              text={`${isManager ? "SWITCH TO USER" : "SWITCH TO MANAGER"}`}
-              varient="black"
-              onClick={handlePress}
-            />
+            {toggleProfiles.length > 0 && (
+              <CustomButton
+                text={`${isManager ? "SWITCH TO USER" : "SWITCH TO MANAGER"}`}
+                varient="black"
+                onClick={handlePress}
+              />
+            )}
             <CustomButton onClick={signout} text="LOG OUT" varient="danger" />
           </View>
         </View>

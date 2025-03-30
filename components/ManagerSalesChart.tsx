@@ -1,20 +1,16 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { BarChart, barDataItem } from "react-native-gifted-charts";
-import { BAR_DATA, formattedBarData, yAxisLabels } from "@/constants/tempory";
+import { formattedBarData, yAxisLabels } from "@/constants/tempory";
 import NormalText from "./NormalText";
 import H2Text from "./H2Text";
 import ColoredSmallText from "./ColoredSmallText";
 import { ChevronDown, ChevronUp } from "lucide-react-native";
-import { useOrderContext } from "@/context/order/OrderContext";
 import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
-import { isLoading } from "expo-font";
 import { formatNumber } from "@/utils/formatPrice";
 
-type Props = {
-  userid: string;
-};
+type Props = {};
 
 enum Period {
   week = "week",
@@ -22,7 +18,7 @@ enum Period {
   year = "year",
 }
 
-const EmployeeSalesChart = ({ userid }: Props) => {
+const ManagerSalesChart = (props: Props) => {
   const [barData, setBarData] = React.useState<barDataItem[]>(formattedBarData);
   const [chartKey, setChartKey] = React.useState(0);
   const [SalesLoading, setSalesLoading] = useState(true);
@@ -54,13 +50,13 @@ const EmployeeSalesChart = ({ userid }: Props) => {
     try {
       let res;
       if (selectedFilter == "This Week") {
-        res = await axiosInstance.get(`/employee/stats/${userid}/lastweek`);
+        res = await axiosInstance.get("/manager/sales/lastweek");
       } else if (selectedFilter == "Last 30 Days") {
-        res = await axiosInstance.get(`/employee/stats/${userid}/lastmonth`);
+        res = await axiosInstance.get("/manager/sales/lastmonth");
       } else if (selectedFilter == "Last Year") {
-        res = await axiosInstance.get(`/employee/stats/${userid}/lastyear`);
+        res = await axiosInstance.get("/manager/sales/lastyear");
       } else {
-        res = await axiosInstance.get(`/employee/stats/${userid}/lastweek`);
+        res = await axiosInstance.get("/manager/sales/lastweek");
       }
       if (!res) {
         return;
@@ -88,7 +84,7 @@ const EmployeeSalesChart = ({ userid }: Props) => {
 
   useEffect(() => {
     fetchSalesData();
-  }, [selectedFilter, userid]);
+  }, [selectedFilter]);
 
   return (
     <View className="p-5 rounded-xl bg-white gap-4 w-full">
@@ -170,4 +166,4 @@ const EmployeeSalesChart = ({ userid }: Props) => {
   );
 };
 
-export default EmployeeSalesChart;
+export default ManagerSalesChart;

@@ -278,7 +278,7 @@ const UpdateStock = (props: Props) => {
                   if (router.canGoBack()) {
                     router.back();
                   } else {
-                    router.replace("/");
+                    router.replace("/selectRoute");
                   }
                 }}
                 className="h-12 rounded-full aspect-square bg-accent-500 flex justify-start items-center mb-5"

@@ -4,9 +4,9 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  StatusBar,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-type Props = {};
 import images from "@/constants/icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SalesComponent from "@/components/SalesComponent";
@@ -19,8 +19,9 @@ import { formatNumber } from "@/utils/formatPrice";
 import { useAuth } from "@/context/AuthContext";
 import { PROFILES } from "@/constants/data";
 import { router } from "expo-router";
+import ManagerSalesChart from "./ManagerSalesChart";
 
-const ManagerDashboard = (props: Props) => {
+const ManagerDashboard = () => {
   const { toggleProfiles, user } = useAuth();
   const [totalSales, setTotalSales] = useState<null | number>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);
@@ -93,18 +94,22 @@ const ManagerDashboard = (props: Props) => {
   }, []);
 
   return (
-    <SafeAreaView className="h-full pb-[75px]">
+    <SafeAreaView className="h-full bg-[#f7f7f7] pb-[30px]">
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
           gap: 6,
           backgroundColor: "#f7f7f7",
-          marginBottom: 80,
         }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
         <View className="gap-10 mb-4">
           <View className="px-7 pt-5 gap-4 ">
             <View className="flex-row justify-between items-center gap-2 ">
@@ -145,7 +150,7 @@ const ManagerDashboard = (props: Props) => {
           </View>
           <View className="px-7 gap-4">
             <SectionTitle title="Analytics" icon={images.AnalyticsIcon} />
-            <SalesChart />
+            <ManagerSalesChart />
           </View>
           <View className="px-7 gap-4">
             <EmployeesList employees={employees} isLoading={isLoading} />

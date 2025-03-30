@@ -22,13 +22,12 @@ const NewEmployee = () => {
   if (!user) return <Redirect href="/" />;
   const isManager = activeProfile[PROFILES.manager] || null;
 
-  console.log("user founded ", activeProfile);
   if (!isManager) {
-    return <Redirect href="/settings" />;
+    return <Redirect href="/" />;
   }
 
   if (!isManager.bakery?.id) {
-    return <Redirect href="/settings" />;
+    return <Redirect href="/" />;
   }
 
   const [refreshing, setRefreshing] = useState(false);
@@ -41,10 +40,10 @@ const NewEmployee = () => {
     resolver: zodResolver(EmployeeRegisterSchema),
     mode: "onChange",
     defaultValues: {
-      name: "Kelly",
-      email: "kelly99@gmail.com",
-      password: "$123Chamith",
-      confirmPassword: "$123Chamith",
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
       bakery_id: isManager.bakery.id.toString(),
     },
   });
@@ -61,7 +60,7 @@ const NewEmployee = () => {
         type: "success",
         text1: res.message,
       });
-      router.push("/settings");
+      router.push("/");
     }
   };
 

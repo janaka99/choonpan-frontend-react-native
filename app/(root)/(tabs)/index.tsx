@@ -1,4 +1,4 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/icons";
 import { Link, Redirect } from "expo-router";
@@ -12,6 +12,11 @@ export default function Index() {
 
   return (
     <SafeAreaView className="bg-accent-200 flex-1 px-10 ">
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
       <ScrollView contentContainerClassName="h-full flex-1 justify-between">
         <View className="w-full flex justify-center items-center flex-col gap-5 ">
           <Text className="text-3xl font-bold font-Poppins-Regular text-accent-500 pt-20">

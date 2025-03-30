@@ -60,9 +60,6 @@ const SignIn = () => {
             paddingBottom: 20, // Add padding to the bottom for a smooth scroll
           }}
         >
-          {/* <TouchableOpacity onPress={checkAuth}>
-            <Text>Check Auth</Text>
-          </TouchableOpacity> */}
           <View className="px-10 flex flex-col  gap-10 pb-5">
             <Controller
               control={control}

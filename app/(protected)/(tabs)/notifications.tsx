@@ -58,7 +58,11 @@ const Notifications = (props: Props) => {
       >
         <View className="">
           <View className="px-8 pt-5">
-            <SectionTitle title="Notifications" icon={images.ProductsIcon} />
+            <SectionTitle
+              title="Notifications"
+              icon={images.ProductsIcon}
+              backLink="/dashboard-landing"
+            />
           </View>
           {error ? (
             <View className="w-full flex-grow justify-center items-center gap-2">
@@ -97,7 +101,7 @@ const Notifications = (props: Props) => {
                   <Text>{notification.description}</Text>
                   <View className="flex-row justify-between">
                     <Text className="mt-2 text-sm text-right text-gray-700">
-                      {formatPostgresDateTime(notification.updatedAt)}
+                      {formatPostgresDateTime(notification.createdAt)}
                     </Text>
                     <Text className="mt-2 text-sm text-right text-red-400">
                       Mark as read
