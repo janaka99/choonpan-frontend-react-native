@@ -1,15 +1,13 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "@/components/Card";
 import { useAuth } from "@/context/AuthContext";
-import { Link, Redirect, useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
 import { PROFILES } from "@/constants/data";
 
-type Props = {};
-
-const settings = (props: Props) => {
+const settings = () => {
   const { user, activeProfile, toggleProfiles, signout } = useAuth();
 
   if (!user) return <Redirect href="/sign-in" />;
@@ -27,7 +25,6 @@ const settings = (props: Props) => {
   };
 
   const firstCharacter = user.name ? user.name.charAt(0) : "M";
-
   return (
     <SafeAreaView className="h-full">
       <ScrollView
@@ -53,7 +50,7 @@ const settings = (props: Props) => {
               </View>
               <View className="">
                 <Text className="font-Poppins-Bold text-xl  text-black capitalize w-fit">
-                  Janaka
+                  {user.name}
                 </Text>
                 <Text className="font-Poppins-Regular text-xl  text-black capitalize w-fit">
                   {user.email}
@@ -72,7 +69,7 @@ const settings = (props: Props) => {
             </Card>
           </View>
           <View className="px-7 gap-4">
-            {toggleProfiles.length > 0 && (
+            {user.profiles.length > 1 && (
               <CustomButton
                 text={`${isManager ? "SWITCH TO USER" : "SWITCH TO MANAGER"}`}
                 varient="black"

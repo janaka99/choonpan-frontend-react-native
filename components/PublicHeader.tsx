@@ -63,10 +63,10 @@ export default function PublicHeader({
           {logoTitle && (
             <View className="flex  px-10 ">
               <View className="w-full flex-row gap-3 justify-center items-center pr-3  text-wrap first-letter">
-                <Text className="text-[35px] font-Poppins-Bold">CHOONPAAN</Text>
+                <Text className="text-3xl font-Poppins-Bold">CHOONPAAN</Text>
                 <View className="flex flex-row">
-                  <Text className="text-[35px] font-Poppins-Bold">OPTIM</Text>
-                  <Text className="text-[35px] font-Poppins-Bold text-accent-400">
+                  <Text className="text-3xl font-Poppins-Bold">OPTIM</Text>
+                  <Text className="text-3xl font-Poppins-Bold text-accent-400">
                     AI
                   </Text>
                 </View>
@@ -96,12 +96,12 @@ export default function PublicHeader({
               </Text>
               <Link
                 className="text-lg font-Poppins-Bold text-black-400"
-                href="/sign-in"
+                href="/select-role"
               >
                 SignUp
               </Link>
             </View>
-            <Text className="text-lg font-Poppins-Medium text-black-300">
+            {/* <Text className="text-lg font-Poppins-Medium text-black-300">
               Or
             </Text>
             <View className="flex-row gap-10 justify-center">
@@ -117,7 +117,7 @@ export default function PublicHeader({
                 source={images.AppleIcon}
                 className="w-16 aspect-square object-cover"
               />
-            </View>
+            </View> */}
           </View>
         )}
       </View>

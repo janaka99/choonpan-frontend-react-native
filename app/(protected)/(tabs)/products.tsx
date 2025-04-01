@@ -1,25 +1,16 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Animated,
-  Easing,
-  RefreshControl,
-} from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
+import React, { useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Loader2, LoaderPinwheel } from "lucide-react-native";
+import { Loader2 } from "lucide-react-native";
 import CustomButton from "@/components/CustomButton";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import images from "@/constants/icons";
 import AddStockCard from "@/components/AddStockCard";
 import SectionTitle from "@/components/SectionTitle";
 import Toast from "react-native-toast-message";
 
-type Props = {};
-
-const products = (props: Props) => {
+const products = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -27,8 +18,6 @@ const products = (props: Props) => {
   const [error, setError] = useState<null | string>(
     "server Error Occured Try Again"
   );
-
-  const spinValue = useRef(new Animated.Value(0)).current;
 
   const loadProducts = async () => {
     setIsLoading(true);
@@ -79,21 +68,12 @@ const products = (props: Props) => {
       setError("server Error Occured Try Again");
     }
   };
-  const startSpinning = () => {
-    Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 1000, // 1 second for a full rotation
-        easing: Easing.linear,
-        useNativeDriver: true, // Improves performance
-      })
-    ).start();
-  };
 
-  useEffect(() => {
-    loadProducts();
-    startSpinning();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadProducts();
+    }, [])
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -121,7 +101,7 @@ const products = (props: Props) => {
           marginBottom: 80,
         }}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={false} onRefresh={onRefresh} />
         }
       >
         <View>

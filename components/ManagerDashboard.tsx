@@ -20,6 +20,7 @@ import { useAuth } from "@/context/AuthContext";
 import { PROFILES } from "@/constants/data";
 import { router } from "expo-router";
 import ManagerSalesChart from "./ManagerSalesChart";
+import BakeryBestSelling from "./BakeryBestSelling";
 
 const ManagerDashboard = () => {
   const { toggleProfiles, user } = useAuth();
@@ -155,6 +156,9 @@ const ManagerDashboard = () => {
           <View className="px-7 gap-4">
             <EmployeesList employees={employees} isLoading={isLoading} />
           </View>
+          {/* <View className="px-7 gap-4">
+            <BakeryBestSelling refreshing={refreshing} />
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>

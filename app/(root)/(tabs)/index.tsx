@@ -2,11 +2,10 @@ import { Image, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/icons";
 import { Link, Redirect } from "expo-router";
-import { Button } from "react-native-paper";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Index() {
-  const { signout, user } = useAuth();
+  const { user } = useAuth();
 
   if (user) return <Redirect href="/dashboard-landing" />;
 
@@ -23,14 +22,14 @@ export default function Index() {
             Welcome!
           </Text>
           <View className="flex flex-col justify-center items-center">
-            <Text className="text-6xl font-Poppins-ExtraBold leading-snug">
+            <Text className="text-4xl font-Poppins-ExtraBold leading-snug">
               CHOONPAAN
             </Text>
             <View className="flex flex-row">
-              <Text className="text-6xl font-Poppins-ExtraBold leading-snug">
+              <Text className="text-4xl font-Poppins-ExtraBold leading-snug">
                 OPTIM
               </Text>
-              <Text className="text-6xl font-Poppins-ExtraBold leading-snug text-accent-500">
+              <Text className="text-4xl font-Poppins-ExtraBold leading-snug text-accent-500">
                 AI
               </Text>
             </View>

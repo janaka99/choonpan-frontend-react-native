@@ -52,7 +52,7 @@ const SignIn = () => {
 
   return (
     <Container logo={false}>
-      <PublicHeader title="Sign In" pathToSignUp={true}>
+      <PublicHeader title="Sign In" pathToSignUp={false}>
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{

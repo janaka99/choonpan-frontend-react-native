@@ -13,6 +13,7 @@ import { useNotificationContext } from "@/context/NotificationContext";
 import { Loader2 } from "lucide-react-native";
 import CustomButton from "@/components/CustomButton";
 import { formatPostgresDateTime } from "@/utils/formatDateTimePostGres";
+import { useFocusEffect } from "expo-router";
 
 type Props = {};
 
@@ -27,6 +28,12 @@ const Notifications = (props: Props) => {
     markAsRead,
     unreadCount,
   } = useNotificationContext();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      reloadNotification();
+    }, [])
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -88,7 +95,9 @@ const Notifications = (props: Props) => {
               {notifications.map((notification: any, i: any) => (
                 <TouchableOpacity
                   key={i}
-                  onPress={() => markAsRead(notification.id)}
+                  onPress={() =>
+                    markAsRead(notification.id, notification.isRead)
+                  }
                   className={`w-full p-4 rounded-md bg-white ${
                     notification.isRead
                       ? "border border-white"
@@ -103,9 +112,11 @@ const Notifications = (props: Props) => {
                     <Text className="mt-2 text-sm text-right text-gray-700">
                       {formatPostgresDateTime(notification.createdAt)}
                     </Text>
-                    <Text className="mt-2 text-sm text-right text-red-400">
-                      Mark as read
-                    </Text>
+                    {!notification.isRead && (
+                      <Text className="mt-2 text-sm text-right text-red-400">
+                        Mark as read
+                      </Text>
+                    )}
                   </View>
                 </TouchableOpacity>
               ))}

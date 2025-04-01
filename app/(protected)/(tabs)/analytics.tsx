@@ -1,18 +1,10 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  RefreshControl,
-} from "react-native";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
 import React, { useEffect, useState } from "react";
-type Props = {};
 import images from "@/constants/icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SalesComponent from "@/components/SalesComponent";
 import SectionTitle from "@/components/SectionTitle";
 import SalesChart from "@/components/SalesChart";
-import EmployeesList from "@/components/EmployeesList";
 import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { formatNumber } from "@/utils/formatPrice";
@@ -21,7 +13,7 @@ import { Link, Redirect } from "expo-router";
 import BestSelling from "@/components/BestSelling";
 import { ChevronLeft } from "lucide-react-native";
 
-const Analytics = (props: Props) => {
+const Analytics = () => {
   const { user } = useAuth();
   const [totalSales, setTotalSales] = useState<null | number>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);

@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
-import MapView, { Marker, Polyline } from "react-native-maps";
+import React from "react";
 import Card from "./Card";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome5";
-import FeatherIcon from "react-native-vector-icons/Feather";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import { Text, View } from "react-native";
 import { ChevronRight } from "lucide-react-native";
-import { Link, Redirect } from "expo-router";
-import { useOrderContext } from "@/context/order/OrderContext";
+import { Link } from "expo-router";
 import MapViewComponent from "./MapView";
 
 export default function MapCard() {

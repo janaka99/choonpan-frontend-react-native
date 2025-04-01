@@ -40,9 +40,9 @@ const SalesComponent = ({
             <Text className="text-black text-4xl  font-Poppins-Bold  ">
               LKR {sales}
             </Text>
-            <Text className="text-green-400 text-xl font-Poppins-Medium ">
+            {/* <Text className="text-green-400 text-xl font-Poppins-Medium ">
               +{upby}
-            </Text>
+            </Text> */}
           </View>
         </View>
       </View>

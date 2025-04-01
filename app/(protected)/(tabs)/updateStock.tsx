@@ -2,20 +2,15 @@ import {
   View,
   Text,
   ScrollView,
-  Animated,
-  Easing,
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ChevronLeft, Loader2, LoaderPinwheel } from "lucide-react-native";
+import { ChevronLeft, Loader2 } from "lucide-react-native";
 import CustomButton from "@/components/CustomButton";
-import { Redirect, router } from "expo-router";
-import images from "@/constants/icons";
-import AddStockCard from "@/components/AddStockCard";
-import SectionTitle from "@/components/SectionTitle";
+import { Redirect, router, useFocusEffect } from "expo-router";
 import Card from "@/components/Card";
 import Toast from "react-native-toast-message";
 import { Product } from "@/types/types";
@@ -23,10 +18,9 @@ import { useAuth } from "@/context/AuthContext";
 import { useLocationContext } from "@/context/liveLocationContext";
 import { useNotificationContext } from "@/context/NotificationContext";
 
-type Props = {};
 type ActionType = "increase" | "decrease";
 
-const UpdateStock = (props: Props) => {
+const UpdateStock = () => {
   const { user: loggedUser } = useAuth();
 
   const { liveLocation, getLiveLocation } = useLocationContext();
@@ -96,36 +90,32 @@ const UpdateStock = (props: Props) => {
     }
   };
 
-  const resetProducts = async () => {
-    try {
-      setIsStockResetting(true);
-      const res = await axiosInstance.post("/employee/products/reset");
-      if (res.data.error) {
-        Toast.show({
-          type: "error",
-          text1: res.data.message || "Error",
-        });
-      } else {
-        Toast.show({
-          type: "success",
-          text1: res.data.message || "Error",
-        });
-        resetOrder();
-        loadProducts();
-      }
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Server error occured, Please try again later",
-      });
-    } finally {
-      setIsStockResetting(false);
-    }
-  };
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
+  // const resetProducts = async () => {
+  //   try {
+  //     setIsStockResetting(true);
+  //     const res = await axiosInstance.post("/employee/products/reset");
+  //     if (res.data.error) {
+  //       Toast.show({
+  //         type: "error",
+  //         text1: res.data.message || "Error",
+  //       });
+  //     } else {
+  //       Toast.show({
+  //         type: "success",
+  //         text1: res.data.message || "Error",
+  //       });
+  //       resetOrder();
+  //       loadProducts();
+  //     }
+  //   } catch (error) {
+  //     Toast.show({
+  //       type: "error",
+  //       text1: "Server error occured, Please try again later",
+  //     });
+  //   } finally {
+  //     setIsStockResetting(false);
+  //   }
+  // };
 
   const resetOrder = () => {
     setOrder({
@@ -135,12 +125,6 @@ const UpdateStock = (props: Props) => {
       },
       orders: [],
     });
-  };
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await loadProducts();
-    setRefreshing(false);
   };
 
   const updateBaught = (productId: number, action: ActionType) => {
@@ -236,6 +220,18 @@ const UpdateStock = (props: Props) => {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadProducts();
+    setRefreshing(false);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadProducts();
+    }, [])
+  );
+
   if (isLoading) {
     return (
       <View className="h-full flex justify-center items-center bg-transparent">
@@ -291,7 +287,7 @@ const UpdateStock = (props: Props) => {
               <View className="flex-row gap-5">
                 <CustomButton
                   varient="small_accent"
-                  text="Place Order"
+                  text="Update Sold Products"
                   onClick={submitOrder}
                   width="w-full"
                   disabled={

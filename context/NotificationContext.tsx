@@ -27,8 +27,11 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const markAsRead = async (id: number) => {
+  const markAsRead = async (id: number, isread: boolean) => {
     try {
+      if (isread) {
+        return;
+      }
       setError(null);
       const res = await axiosInstance.post(
         `/employee/notifications/${id}/mark-as-read`

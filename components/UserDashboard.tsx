@@ -23,7 +23,7 @@ export default function UserDashboard({}: Props) {
   const { user } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const [locationSearchingOn, setLocationSearchingOn] = useState(false);
-  const { currentLocationUpdating, currentJourney } = useOrderContext();
+  const { currentLocationUpdating } = useOrderContext();
 
   const onRefresh = async () => {
     if (refreshing) return;

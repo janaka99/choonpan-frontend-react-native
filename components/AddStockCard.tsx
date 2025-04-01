@@ -24,6 +24,7 @@ export default function AddStockCard({
   product,
   getProducts,
 }: Props) {
+  console.log(product);
   const {
     control,
     handleSubmit,
@@ -67,7 +68,7 @@ export default function AddStockCard({
           stock: 0,
         });
 
-        router.push("/products");
+        router.replace("/products");
       }
     } catch (error) {
       Toast.show({

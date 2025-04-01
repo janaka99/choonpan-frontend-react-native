@@ -1,6 +1,5 @@
 import { View, Text, ScrollView, RefreshControl } from "react-native";
 import React, { useEffect, useState } from "react";
-type Props = {};
 import images from "@/constants/icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SectionTitle from "@/components/SectionTitle";
@@ -11,7 +10,7 @@ import { ChevronLeft, Loader2 } from "lucide-react-native";
 import EmployeeSalesChart from "@/components/EmployeeSalesChart";
 import EmployeeBestSelling from "@/components/EmployeeBestSelling";
 
-const Analytics = (props: Props) => {
+const Analytics = () => {
   interface User {
     name: string;
     id: string;
@@ -26,6 +25,7 @@ const Analytics = (props: Props) => {
 
   if (!userid) return <Redirect href="/dashboard-landing" />;
 
+  // this function used to get the employee
   const getEmployeeById = async () => {
     try {
       setUser(null);

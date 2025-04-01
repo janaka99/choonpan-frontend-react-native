@@ -25,7 +25,7 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
   } | null>(null);
 
   const [routeInformationLoding, setRouteInformationLoding] = useState(true);
-  const [demandItems, setDemandItems] = useState([]);
+  // const [demandItems, setDemandItems] = useState([]);
   const [journeyStarted, setJourneyStarted] = useState(false);
   const [orders, setOrders] = useState([]);
   const [availableRoutes, setAvailableRoutes] = useState<
@@ -109,7 +109,7 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
       if (res.data.error) {
         return null;
       }
-      setDemandItems(JSON.parse(res.data.demandItems));
+      // setDemandItems(JSON.parse(res.data.demandItems));
       setOrders(JSON.parse(res.data.orders));
       setOtherDrivers(JSON.parse(res.data.otherDrivers));
       if (res.data.journey) {
@@ -188,22 +188,22 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getLiveLocation = async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        return;
-      }
+  // const getLiveLocation = async () => {
+  //   try {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       return;
+  //     }
 
-      let loc = await Location.getCurrentPositionAsync({});
-      setLiveLocation({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-      });
-    } catch (error) {
-      console.log("Live location error ", error);
-    }
-  };
+  //     let loc = await Location.getCurrentPositionAsync({});
+  //     setLiveLocation({
+  //       latitude: loc.coords.latitude,
+  //       longitude: loc.coords.longitude,
+  //     });
+  //   } catch (error) {
+  //     console.log("Live location error ", error);
+  //   }
+  // };
 
   useEffect(() => {
     (async () => {
@@ -246,7 +246,6 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
         // Extract the remaining route from the nearest point onward
         const remainingRouteFromNearest =
           currentJourney.route.slice(nearestIndex);
-        console.log("runs fucntion");
         // Ensure live location is at the start of the remaining route
         const updatedRemainingRoute = [
           {
@@ -274,7 +273,7 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
   const contextData = {
     currentLocation,
     availableRoutes,
-    demandItems,
+    // demandItems,
     orders,
     updateCurrentLocation,
     getLocationAndRouteInformation,

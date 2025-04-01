@@ -1,12 +1,10 @@
 import { View, StyleSheet, Image } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import images from "@/constants/icons";
 import { useOrderContext } from "@/context/order/OrderContext";
 import { useLocationContext } from "@/context/liveLocationContext";
-
-type Props = {};
 
 const MapViewComponent = () => {
   const {
@@ -19,7 +17,6 @@ const MapViewComponent = () => {
     setSelectedRoute,
     otherDrivers,
     currentJourney,
-    remainingRoute,
   } = useOrderContext();
 
   const { liveLocation } = useLocationContext();

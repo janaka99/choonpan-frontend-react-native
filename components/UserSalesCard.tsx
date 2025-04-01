@@ -6,6 +6,7 @@ import images from "@/constants/icons";
 import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { formatNumber } from "@/utils/formatPrice";
+import { useRouter } from "expo-router";
 
 type Props = {};
 
@@ -13,6 +14,8 @@ const UserSalesCard = ({ refreshing }: any) => {
   const [totalSales, setTotalSales] = useState<null | string>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);
   const [SalesLoading, setSalesLoading] = useState(true);
+
+  const router = useRouter();
 
   const fetchSalesData = async () => {
     setSalesLoading(true);
@@ -53,11 +56,13 @@ const UserSalesCard = ({ refreshing }: any) => {
             text="Stock Levels"
             varient="small_white"
             width="w-fit"
+            onClick={() => router.push("/products")}
           />
           <CustomButton
             text="Financial Summary"
             varient="small_accent_light"
             width="w-fit"
+            onClick={() => router.push("/analytics")}
           />
         </View>
       </ScrollView>
@@ -76,7 +81,7 @@ const UserSalesCard = ({ refreshing }: any) => {
           )}
         </View>
         <View className="  items-center gap-3">
-          <View className="flex-row gap-2 px-2 py-[6px] rounded-2xl border-2 border-gray-50 w-24 inline-block justify-center items-center">
+          {/* <View className="flex-row gap-2 px-2 py-[6px] rounded-2xl border-2 border-gray-50 w-24 inline-block justify-center items-center">
             <Text className="text-2xl  font-Poppins-Medium text-green-500">
               0%
             </Text>
@@ -86,7 +91,7 @@ const UserSalesCard = ({ refreshing }: any) => {
               className="text-green-500"
               size={20}
             />
-          </View>
+          </View> */}
           <Image source={images.CHartIcon} className="contain" />
         </View>
       </View>

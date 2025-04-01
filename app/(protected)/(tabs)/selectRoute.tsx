@@ -1,5 +1,5 @@
 import { SafeAreaView, Text, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import MapHeader from "@/components/MapHeader";
 import { useOrderContext } from "@/context/order/OrderContext";
 import MapViewComponent from "@/components/MapView";
