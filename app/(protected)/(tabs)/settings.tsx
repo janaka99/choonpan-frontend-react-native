@@ -61,12 +61,9 @@ const settings = () => {
               <Text className="text-xl font-Poppins-Bold">Account</Text>
               <Text className="text-xl font-Poppins-Bold">Edit Profile</Text>
               <Text className="text-xl font-Poppins-Bold">Privacy</Text>
-              <Text className="text-xl font-Poppins-Bold">Settings</Text>
-            </Card>
-            <Card className="gap-5">
               <Text className="text-xl font-Poppins-Bold">Help & Support</Text>
-              <Text className="text-xl font-Poppins-Bold">Notification</Text>
             </Card>
+
           </View>
           <View className="px-7 gap-4">
             {user.profiles.length > 1 && (

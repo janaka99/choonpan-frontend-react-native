@@ -9,6 +9,7 @@ import { ChevronDown, ChevronUp } from "lucide-react-native";
 import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { formatNumber } from "@/utils/formatPrice";
+import { generateYAxisLabel } from "@/utils/generateYAxisLable";
 
 type Props = {
   refreshing: boolean;
@@ -160,7 +161,7 @@ const SalesChart = ({ refreshing }: Props) => {
           yAxisTextStyle={{ color: "gray" }}
           isAnimated
           animationDuration={300}
-          yAxisLabelTexts={yAxisLabels}
+    yAxisLabelTexts={generateYAxisLabel(barData)}
           frontColor="#DBEAFE"
         />
       )}

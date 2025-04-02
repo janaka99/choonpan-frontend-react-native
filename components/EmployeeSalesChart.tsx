@@ -11,6 +11,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { isLoading } from "expo-font";
 import { formatNumber } from "@/utils/formatPrice";
+import { generateYAxisLabel } from "@/utils/generateYAxisLable";
 
 type Props = {
   userid: string;
@@ -162,7 +163,7 @@ const EmployeeSalesChart = ({ userid }: Props) => {
           yAxisTextStyle={{ color: "gray" }}
           isAnimated
           animationDuration={300}
-          yAxisLabelTexts={yAxisLabels}
+     yAxisLabelTexts={generateYAxisLabel(barData)}
           frontColor="#DBEAFE"
         />
       )}

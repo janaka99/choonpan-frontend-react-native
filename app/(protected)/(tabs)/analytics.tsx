@@ -94,14 +94,14 @@ const Analytics = () => {
               icon={images.CartIconAccent}
               loading={SalesLoading}
             />
-            <SalesComponent
+            {/* <SalesComponent
               title="Total Revenue"
               sales={formatNumber(totalRevenue)}
               upby="14%"
               background="bg-custom-blue-50"
               icon={images.DollarIconBlue}
               loading={SalesLoading}
-            />
+            /> */}
           </View>
           <View className="px-7 gap-4">
             <SectionTitle title="Analytics" icon={images.AnalyticsIcon} />

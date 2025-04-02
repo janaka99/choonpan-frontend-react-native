@@ -140,14 +140,14 @@ const ManagerDashboard = () => {
               icon={images.CartIconAccent}
               loading={SalesLoading}
             />
-            <SalesComponent
+            {/* <SalesComponent
               title="Total Revenue"
               sales={formatNumber(totalRevenue)}
               upby="14%"
               background="bg-custom-blue-50"
               icon={images.DollarIconBlue}
               loading={SalesLoading}
-            />
+            /> */}
           </View>
           <View className="px-7 gap-4">
             <SectionTitle title="Analytics" icon={images.AnalyticsIcon} />
@@ -156,9 +156,9 @@ const ManagerDashboard = () => {
           <View className="px-7 gap-4">
             <EmployeesList employees={employees} isLoading={isLoading} />
           </View>
-          {/* <View className="px-7 gap-4">
+          <View className="px-7 gap-4">
             <BakeryBestSelling refreshing={refreshing} />
-          </View> */}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

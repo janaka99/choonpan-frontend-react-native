@@ -45,14 +45,14 @@ export default function EmployeeSalesCard({
         icon={images.CartIconAccent}
         loading={SalesLoading}
       />
-      <SalesComponent
+      {/* <SalesComponent
         title="Total Revenue"
         sales={formatNumber(totalRevenue)}
         upby="14%"
         background="bg-custom-blue-50"
         icon={images.DollarIconBlue}
         loading={SalesLoading}
-      />
+      /> */}
     </>
   );
 }
