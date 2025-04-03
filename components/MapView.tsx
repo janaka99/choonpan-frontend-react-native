@@ -24,7 +24,7 @@ const MapViewComponent = () => {
   const onMarkerClick = (rt: any) => {
     setSelectedRoute(rt);
   };
-
+console.log("current journey ",currentJourney)
   if (routeInformationLoding || currentLocationUpdating) {
     return <View className="w-full h-full bg-gray-50"></View>;
   }
@@ -98,12 +98,15 @@ const MapViewComponent = () => {
         ))}
       {currentJourney
         ? currentJourney.route && (
+          <>
             <Polyline
               coordinates={currentJourney.route}
               strokeWidth={5}
               strokeColor={"#F1720C"}
               tappable
-            />
+              />
+              
+              </>
           )
         : availableRoutes.length >= 1 &&
           availableRoutes.map((rt: any, i: any) => {

@@ -7,6 +7,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { formatNumber } from "@/utils/formatPrice";
 import { useRouter } from "expo-router";
+import { useOrderContext } from "@/context/order/OrderContext";
 
 type Props = {};
 
@@ -14,7 +15,10 @@ const UserSalesCard = ({ refreshing }: any) => {
   const [totalSales, setTotalSales] = useState<null | string>(null);
   const [totalRevenue, setTotalRevenue] = useState<null | number>(null);
   const [SalesLoading, setSalesLoading] = useState(true);
+  const {
 
+    currentJourney,
+  } = useOrderContext();
   const router = useRouter();
 
   const fetchSalesData = async () => {
@@ -52,12 +56,15 @@ const UserSalesCard = ({ refreshing }: any) => {
             varient="small_accent"
             width="w-fit"
           />
-          <CustomButton
+          {currentJourney && (
+
+            <CustomButton
             text="Stock Levels"
             varient="small_white"
             width="w-fit"
-            onClick={() => router.push("/products")}
-          />
+            onClick={() => router.push("/updateStock")}
+            />
+          )}
           <CustomButton
             text="Financial Summary"
             varient="small_accent_light"
