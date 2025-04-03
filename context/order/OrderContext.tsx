@@ -117,17 +117,30 @@ const OrderProvider = ({ children }: { children: ReactNode }) => {
       }
       const pr = JSON.parse(res.data.possibleRoutes);
 
-      if (pr) {
+      if (Array.isArray(pr) && pr.length > 0) {
         const possibleRoutes = await updateRoutes(pr);
         if (possibleRoutes) {
           setSelectedRoute(possibleRoutes[0]);
           setAvailableRoutes(possibleRoutes);
         } else {
+          console.log("Reached here")
+          setAvailableRoutes([])
           setSelectedRoute(null);
         }
       } else {
         setSelectedRoute(null);
       }
+      // if (pr) {
+      //   const possibleRoutes = await updateRoutes(pr);
+      //   if (possibleRoutes) {
+      //     setSelectedRoute(possibleRoutes[0]);
+      //     setAvailableRoutes(possibleRoutes);
+      //   } else {
+      //     setSelectedRoute(null);
+      //   }
+      // } else {
+      //   setSelectedRoute(null);
+      // }
     } catch (error) {
       return null;
     } finally {

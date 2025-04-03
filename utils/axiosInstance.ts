@@ -7,8 +7,8 @@ const PUBLIC_URL =
 console.log(PUBLIC_URL);
 // Create Axios Instance
 const axiosInstance = axios.create({
-  // baseURL: "http://192.168.250.32:3000/api",
-  baseURL: `${PUBLIC_URL}/api`,
+  baseURL: "http://192.168.191.32:3000/api",
+  // baseURL: `${PUBLIC_URL}/api`,
   //   withCredentials: true,
 });
 

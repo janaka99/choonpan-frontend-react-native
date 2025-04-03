@@ -122,7 +122,7 @@ console.log("current journey ",currentJourney)
           />
   )) }
         
-        {!currentJourney  &&   selectedRoute && (
+        {!currentJourney  &&   selectedRoute &&  selectedRoute.route &&(
           <Polyline
             key={selectedRoute.id}
             coordinates={selectedRoute.route}

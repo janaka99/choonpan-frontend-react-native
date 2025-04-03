@@ -20,13 +20,29 @@ const selectRoute = (props: Props) => {
     journeyStarted,
     currentJourneyUpdating,
     currentJourney,
+    availableRoutes,
   } = useOrderContext();
+
   return (
     <SafeAreaView className="rounded-xl h-full overflow-hidden w-full realative">
       <View className="h-full relative">
         {!currentJourney && <MapHeader title="SELECT ROUTE" />}
         <MapViewComponent />
-        {selectedRoute ? (
+{availableRoutes && availableRoutes.length > 0 ? selectedRoute  && (
+  journeyStarted ? (
+    <SellStockouteButton />
+  ):(
+    <InformationButton selectedRoute={selectedRoute} />
+  )
+):(
+  journeyStarted ? (
+    <SellStockouteButton />
+  ):(
+    <InformationButton selectedRoute={selectedRoute} />
+  )
+)}
+{/* 
+        {  availableRoutes ? selectedRoute && (
           journeyStarted ? (
             <SellStockouteButton />
           ) : (
@@ -34,7 +50,7 @@ const selectRoute = (props: Props) => {
           )
         ) : (
           <SelectRouteButton />
-        )}
+        )} */}
         {currentJourneyUpdating && (
           <View className="w-full h-full absolute top-0 left-0 z-50 bg-gray-100/40 flex justify-center items-center">
             <Text className="text-center font-Poppins-Bold">
