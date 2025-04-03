@@ -25,7 +25,7 @@ export default function PublicHeader({
   return (
     <View className="absolutes bottom-0 left-0 w-full min-h-[60vh] rounded-t-[30px] bg-white">
       <View className="flex-grow flex flex-col justify-between py-10">
-        <View className=" flex flex-col gap-5">
+        <View className=" w-full flex flex-col gap-5">
           <View className="flex flex-row justify-between  relative">
             <View className="flex flex-row items-center px-10 gap-5">
               {backArrow ? (

@@ -2,11 +2,13 @@ import { View, Text, ScrollView, Image } from "react-native";
 import React, { ReactNode } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/icons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 type Props = {
   children: ReactNode;
   logo?: boolean;
   keyboardShouldPersistTaps?: boolean | "never" | "always" | "handled";
   nestedScrollEnabled?: boolean;
+  className?: string;
 };
 
 const Container = ({
@@ -14,15 +16,11 @@ const Container = ({
   logo = false,
   keyboardShouldPersistTaps = "never",
   nestedScrollEnabled = false,
+  className = "",
 }: Props) => {
   return (
-    <SafeAreaView className=" h-full bg-orange-400s  relative">
-      <View className="h-full">
-        {/* <ScrollView
-          keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-          nestedScrollEnabled={nestedScrollEnabled}
-          contentContainerClassName="h-full flex-1s justify-between"
-        > */}
+    <SafeAreaView className=" h-full  relative">
+      <View className="h-full ">
         <View className="h-full w-full absolute inset-0">
           <View className="w-full h-2/5 flex justify-center items-cente relative ">
             <Image
@@ -36,13 +34,22 @@ const Container = ({
             )}
           </View>
         </View>
-        <ScrollView contentContainerClassName="flex-grow">
-          <View className="flex-1 pt-20 ">
-            <View className="flex-1 justify-end ">{children}</View>
-          </View>
-        </ScrollView>
+        <View className="h-full  ">
+     
+          <KeyboardAwareScrollView 
+          keyboardShouldPersistTaps="handled"
+          enableOnAndroid={true}
+          enableAutomaticScroll={true}
+          contentContainerClassName="pt-20 flex-grow flex-col justify-end" 
+        >
+              <View className="flex-grow flex flex-col justify-end">
+            <View className={`${className} w-full `}>
 
-        {/* </ScrollView> */}
+                  {children}
+            </View>
+          </View>
+          </KeyboardAwareScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );

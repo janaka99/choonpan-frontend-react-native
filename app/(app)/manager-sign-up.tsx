@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Redirect } from "expo-router";
@@ -58,13 +58,6 @@ const ManagerSignUp = () => {
   return (
     <Container logo={false}>
       <PublicHeader title="Sign Up" pathToSignUp={true}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingBottom: 20,
-          }}
-        >
           <View className="px-10 flex flex-col  gap-10 pb-5">
             <Controller
               control={control}
@@ -174,7 +167,6 @@ const ManagerSignUp = () => {
               onClick={handleSubmit(onSubmit)}
             />
           </View>
-        </ScrollView>
       </PublicHeader>
     </Container>
   );
