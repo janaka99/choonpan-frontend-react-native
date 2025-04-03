@@ -27,20 +27,26 @@ const selectRoute = (props: Props) => {
     <SafeAreaView className="rounded-xl h-full overflow-hidden w-full realative">
       <View className="h-full relative">
         {!currentJourney && <MapHeader title="SELECT ROUTE" />}
-        <MapViewComponent />
-{availableRoutes && availableRoutes.length > 0 ? selectedRoute  && (
-  journeyStarted ? (
-    <SellStockouteButton />
-  ):(
-    <InformationButton selectedRoute={selectedRoute} />
-  )
-):(
-  journeyStarted ? (
-    <SellStockouteButton />
-  ):(
-    <InformationButton selectedRoute={selectedRoute} />
-  )
-)}
+                <MapViewComponent />
+        {availableRoutes ? availableRoutes.length > 0 ? selectedRoute  && (
+          journeyStarted ? (
+            <SellStockouteButton />
+          ):(
+            <InformationButton selectedRoute={selectedRoute} />
+          )
+        ):(
+          journeyStarted ? (
+            <SellStockouteButton />
+          ):(
+            <InformationButton selectedRoute={selectedRoute} />
+          )
+        ):(
+          journeyStarted ? (
+            <SellStockouteButton />
+          ):(
+            <InformationButton selectedRoute={selectedRoute} />
+          )
+        )}
 {/* 
         {  availableRoutes ? selectedRoute && (
           journeyStarted ? (
