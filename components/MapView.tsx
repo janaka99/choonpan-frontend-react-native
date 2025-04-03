@@ -21,6 +21,7 @@ const MapViewComponent = () => {
 
   const { liveLocation } = useLocationContext();
 
+
   const onMarkerClick = (rt: any) => {
     setSelectedRoute(rt);
   };
@@ -108,25 +109,29 @@ console.log("current journey ",currentJourney)
               
               </>
           )
-        : availableRoutes.length >= 1 &&
-          availableRoutes.map((rt: any, i: any) => {
-            return (
-              <Polyline
-                key={i}
-                coordinates={rt.route}
-                strokeWidth={5}
-                strokeColor={
-                  selectedRoute
-                    ? selectedRoute.id == rt.id
-                      ? "#F1720C"
-                      : "#bebebe"
-                    : "#bebebe"
-                }
-                onPress={() => onMarkerClick(rt)}
-                tappable
-              />
-            );
-          })}
+        : availableRoutes
+        .filter((rt:any) => !selectedRoute || rt.id !== selectedRoute.id) 
+        .map((rt: any, i: any) => (
+          <Polyline
+            key={i}
+            coordinates={rt.route}
+            strokeWidth={5}
+            strokeColor={"#bebebe"}
+            onPress={() => onMarkerClick(rt)}
+            tappable
+          />
+  )) }
+        
+        {!currentJourney  &&   selectedRoute && (
+          <Polyline
+            key={selectedRoute.id}
+            coordinates={selectedRoute.route}
+            strokeWidth={5}
+            strokeColor={"#F1720C"}
+            onPress={() => onMarkerClick(selectedRoute)}
+            tappable
+          />
+      )}
     </MapView>
   );
 };

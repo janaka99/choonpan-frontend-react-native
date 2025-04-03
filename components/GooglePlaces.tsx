@@ -1,4 +1,4 @@
-import { JOHNS_BAKERY_LOCATION } from "@/constants/data";
+import { BAKERIES_LOCATIONS, JOHNS_BAKERY_LOCATION } from "@/constants/data";
 import { useOrderContext } from "@/context/order/OrderContext";
 import React, { useState } from "react";
 import {
@@ -64,11 +64,11 @@ const GooglePlaces = ({ setLocationSearchingOn }: any) => {
     fetchPlaceSuggestions(query); // Fetch suggestions on input change
   };
 
-  const handle = async () => {
+  const handle = async (idtm:any) => {
     await updateCurrentLocation(
-      JOHNS_BAKERY_LOCATION.latitude,
-      JOHNS_BAKERY_LOCATION.longitude,
-      JOHNS_BAKERY_LOCATION.name
+      idtm.latitude,
+      idtm.longitude,
+      idtm.name
     );
     setLocationSearchingOn(false);
   };
@@ -97,7 +97,9 @@ const GooglePlaces = ({ setLocationSearchingOn }: any) => {
           />
         ) : (
           <>
-            <TouchableOpacity onPress={handle}>
+          {BAKERIES_LOCATIONS.map((itm,i)=>(
+
+            <TouchableOpacity onPress={()=>handle(itm)} key={i}>
               <View
                 style={{
                   padding: 10,
@@ -106,10 +108,11 @@ const GooglePlaces = ({ setLocationSearchingOn }: any) => {
                 }}
               >
                 <Text style={{ fontSize: 18 }}>
-                  {JOHNS_BAKERY_LOCATION.name}
+                  {itm.name}
                 </Text>
               </View>
             </TouchableOpacity>
+            ))}
             {suggestions.map((item: any, key: any) => (
               <TouchableOpacity
                 key={key}
